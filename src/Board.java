@@ -30,32 +30,29 @@ public class Board extends JPanel{
     private static Country selectedCountry;
     private static Country selectedSecondCountry;
     private final JLabel turnInfo;
-    private final JLabel[] cardInfo;
+    private final JLabel bonusInfo;
     private final Dice diceInfo;
     private static Player[] players;
 
     enum Mode {
-        UseCardMode, InitialPlacingMode, PlacingMode, AttackFromMode, AttackToMode, 
+        InitialPlacingMode, PlacingMode, AttackFromMode, AttackToMode,
         KeepAttackingMode, NewCountryMode, FortifyFromMode, FortifyToMode, 
         KeepFortifyingMode, GameOverMode;
     }
 
     private Mode mode = Mode.InitialPlacingMode;
 
-    public Board(final JLabel turnInfo, final JLabel[] cardInfo, Dice diceInfo, int numPlayers) {
+    public Board(final JLabel turnInfo,JLabel bonus,Dice diceInfo, int numPlayers) {
 
         this.turnInfo = turnInfo;
-        this.cardInfo = cardInfo;
         this.diceInfo = diceInfo;
+        this.bonusInfo = bonus;
 
         initializeCountries();   
         initializeContinents();
         initializePlayers(numPlayers);
         initialCountryOwners(numPlayers);
-        Player.initialDeck();
         initialTroopsToPlace();
-
-        setCardLabels();
 
         turnInfo.setText(getStringForMode());
 
@@ -64,13 +61,11 @@ public class Board extends JPanel{
                 Point mouse = e.getPoint();
 
                 switch (mode) {
-                case UseCardMode:
-                    break;
                 case InitialPlacingMode: 
-                    placeSoldier(mouse);
+                    placeSoldier(mouse,e.isMetaDown());
                     break;
                 case PlacingMode: 
-                    placeSoldier(mouse);
+                    placeSoldier(mouse,false);
                     break;
                 case AttackFromMode:
                     selectOwnerCountry(mouse);
@@ -98,7 +93,6 @@ public class Board extends JPanel{
                 case GameOverMode:
                     break;
                 }
-                setCardLabels();
                 turnInfo.setText(getStringForMode());
                 repaint();
             }
@@ -110,7 +104,12 @@ public class Board extends JPanel{
     private void initializePlayers(int numPlayers) {
         players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player();
+            if(i==numPlayers-1) {
+                players[i] = new IA();
+            }
+            else {
+                players[i] = new Player();
+            }
         }
     }
 
@@ -222,6 +221,7 @@ public class Board extends JPanel{
         countries[2].adjacentCountries.add(countries[3]);
         countries[2].adjacentCountries.add(countries[8]);
         countries[2].adjacentCountries.add(countries[9]);
+
 
         countries[3].adjacentCountries = new TreeSet<Country>();
         countries[3].adjacentCountries.add(countries[6]);
@@ -460,12 +460,17 @@ public class Board extends JPanel{
      * moves on to next mode after all soldiers have been placed
      * @param: mouse for the mouse click location
      */
-    private void placeSoldier(Point mouse) {
+    private void placeSoldier(Point mouse,boolean isRightClick) {
 
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse)) {
-                c.numSoldiers++;
-                troopsToPlace--;
+                if(isRightClick && c.numSoldiers!=1){
+                    c.numSoldiers--;
+                    troopsToPlace++;
+                } else if(!isRightClick){
+                    c.numSoldiers++;
+                    troopsToPlace--;
+                }
             }
         }
         if (troopsToPlace == 0) {
@@ -625,11 +630,6 @@ public class Board extends JPanel{
             return;
         }
         if (selectedSecondCountry.numSoldiers == 0) {
-            if (!Player.wonCardAlready) {
-                players[turn].winCard();
-                Player.wonCardAlready = true;
-            }
-
             mode = Mode.NewCountryMode;
             conquer();
         }
@@ -666,9 +666,9 @@ public class Board extends JPanel{
 
         if (enemy.countriesOwned.isEmpty()) {
             enemy.dead = true;
-            for (int i = 0; i < enemy.cards.length; i++) {
+           /* for (int i = 0; i < enemy.cards.length; i++) {
                 players[turn].cards[i] += enemy.cards[i];
-            }
+            }*/
         }
         checkWin();
         selectedSecondCountry.numSoldiers = 1;
@@ -743,11 +743,6 @@ public class Board extends JPanel{
     public String getStringForMode() {
         String init = "Player " + (turn + 1) + ": ";
         switch(mode) {
-        case UseCardMode:
-            if (players[turn].fullHand()) {
-                return init + "You have a full hand. You must use a set.";
-            }
-            return init + "Would you like to use your cards?";
         case InitialPlacingMode:
             return init + "Welcome to Risk! Place troops: " + troopsToPlace + " remaining";
         case PlacingMode:
@@ -780,12 +775,8 @@ public class Board extends JPanel{
      * This function is used by the Next button
      */
     public void next() {
+
         switch(mode) {
-        case UseCardMode:
-            if (!players[turn].fullHand()) {
-                nextMode();
-            }
-            break;
         case InitialPlacingMode:
             break;
         case PlacingMode:
@@ -818,7 +809,6 @@ public class Board extends JPanel{
         case GameOverMode:
             break;    
         }
-        setCardLabels();
         turnInfo.setText(getStringForMode());
         repaint();
     }
@@ -829,17 +819,29 @@ public class Board extends JPanel{
     private void nextPlayer() {
         selectedCountry = null;
         selectedSecondCountry = null;
-        Player.wonCardAlready = false;
+
+       // Player.wonCardAlready = false;
         turn = (turn + 1) % players.length;
         while (players[turn].dead) {
             turn = (turn + 1) % players.length;
         }
-        if (players[turn].hasSet()) {
+        /*if (players[turn].hasSet()) {
             mode = Mode.UseCardMode;
-        } else {
-            mode = Mode.PlacingMode;
+        }*/
+
+        mode = Mode.PlacingMode;
+
+        int bonus =0;
+        for (int i = 0; i < Board.continentBonuses.length; i++) {
+            if (continentOwned(i)) {
+                bonus += Board.continentBonuses[i];
+            }
         }
+        bonusInfo.setText("Bonus : "+bonus);
+
         updateTroopsToPlace();
+
+
     }
 
     /* iterates the mode to the next
@@ -847,9 +849,6 @@ public class Board extends JPanel{
      */
     private void nextMode() {
         switch(mode) {
-        case UseCardMode:
-            mode = Mode.PlacingMode;
-            break;
         case InitialPlacingMode:
             mode = Mode.PlacingMode;
             break;
@@ -882,38 +881,13 @@ public class Board extends JPanel{
         }
     }
 
-    /* Uses a set of the player's cards and updates the number of troops they
-     * can place accordingly
-     * This function is used by the Use button
-     */
-    public void useCards() {
-        if (mode != Mode.UseCardMode) {
-            return;
-        }
-        int bonus = Player.cardBonus();
-        troopsToPlace += bonus;
-        turnInfo.setText("You just traded in a set for " + bonus + " soldiers!");
-        players[turn].useSet();
-        setCardLabels();
-        if (!players[turn].hasSet()) {
-            nextMode();
-        }
-
-    }
-
     /* updates the text displaying the card status
      */
-    public void setCardLabels() {
-        String[] cardLabels = players[turn].StringOfCards();
-        for (int i = 0; i < cardLabels.length; i++) {
-            cardInfo[i].setText(cardLabels[i]);    
-        }
-    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(new Color(25, 25, 154));
+        g.setColor(new Color(80, 80, 80));
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         for (int i = 0; i < players.length; i++) {
             Player player = players[i];

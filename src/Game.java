@@ -1,5 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -40,38 +39,23 @@ public class Game implements Runnable {
         turnPanel.add(turnInfo);
 
         final JPanel statusPanel = new JPanel();
-        final JPanel cardPanel = new JPanel();
-        cardPanel.setPreferredSize(new Dimension(100, 300));
         statusPanel.setPreferredSize(new Dimension(120, 0));
+        statusPanel.setBackground(new Color(170,170,170));
 
-        final JLabel[] cardInfo = new JLabel[8];
-        for (int i = 0; i < cardInfo.length; i++) {
-            cardInfo[i] = new JLabel();
-            cardPanel.add(cardInfo[i]);
-        }
         Dice diceInfo = new Dice();
-
-        final Board board = new Board(turnInfo, cardInfo, diceInfo, numPlayers);
+        JLabel bonus = new JLabel("Bonus : 0");
+        final Board board = new Board(turnInfo, bonus, diceInfo, numPlayers);
         frame.add(board, BorderLayout.CENTER);
 
-        final JButton use = new JButton("Use");
-        use.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                board.useCards();
-            }
-        });
-        cardPanel.add(use);
-
-        final JButton next = new JButton("Next");
+        final JButton next = new JButton("Next action");
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 board.next();
             }
         });
+        statusPanel.add(bonus);
+        statusPanel.add(diceInfo);
         statusPanel.add(next);
-        statusPanel.add(cardPanel);
-        statusPanel.add(diceInfo, BorderLayout.SOUTH);
-
         frame.add(statusPanel, BorderLayout.WEST);
         frame.add(turnPanel, BorderLayout.SOUTH);
 
