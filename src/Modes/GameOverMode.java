@@ -19,11 +19,11 @@ public class GameOverMode implements Mode {
 
     @Override
     public void nextButtonIsPushed() {
-        return;
+
     }
 
     @Override
     public Mode nextMode() {
-        return null;
+        return this;
     }
 }

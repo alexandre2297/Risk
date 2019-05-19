@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class KeepFortifyingMode implements Mode {
 
     private Board board;
@@ -19,11 +21,21 @@ public class KeepFortifyingMode implements Mode {
 
     @Override
     public void nextButtonIsPushed() {
-
+        board.nextPlayer();
     }
 
     @Override
     public Mode nextMode() {
-        return null;
+        board.nextPlayer();
+        return this;
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+        if (Board.getSelectedSecondCountry().inBounds(mouse)) {
+            board.fortify();
+            System.out.println("Keep Fortifying Modes.Mode");
+        }
+
     }
 }

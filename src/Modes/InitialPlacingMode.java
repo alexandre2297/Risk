@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class InitialPlacingMode implements Mode {
 
     private Board board;
@@ -18,11 +20,18 @@ public class InitialPlacingMode implements Mode {
 
     @Override
     public void nextButtonIsPushed() {
-        return;
+
     }
 
     @Override
     public Mode nextMode() {
-        return null;
+        return new PlacingMode(board);
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+
+        board.placeSoldier(mouse, isRightClick);
+        System.out.println("Initial Placing Modes.Mode");
     }
 }

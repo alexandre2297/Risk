@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class AttackFromMode implements Mode {
 
 
@@ -25,6 +27,13 @@ public class AttackFromMode implements Mode {
 
     @Override
     public Mode nextMode() {
-        return null;
+        return new PlacingMode(board);
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+        board.selectOwnerCountry(mouse);
+        System.out.println("Attack From Modes.Mode");
+
     }
 }

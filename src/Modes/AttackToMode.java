@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class AttackToMode implements Mode {
 
 
@@ -20,10 +22,20 @@ public class AttackToMode implements Mode {
     @Override
     public void nextButtonIsPushed() {
 
+        Board.setSelectedCountry(null);
+        Board.setSelectedSecondCountry(null);
+        board.setMode(new FortifyFromMode(board));
     }
 
     @Override
     public Mode nextMode() {
-        return null;
+        return new KeepAttackingMode(board);
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+        board.selectEnemyCountry(mouse);
+        System.out.println("Attack To Modes.Mode");
+
     }
 }

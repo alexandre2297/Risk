@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class NewCountryMode implements Mode {
 
     private Board board;
@@ -24,6 +26,13 @@ public class NewCountryMode implements Mode {
 
     @Override
     public Mode nextMode() {
-        return null;
+        return new AttackFromMode(board);
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+        board.placeSoldierNewCountry(mouse);
+        System.out.println("New Game.Country Modes.Mode");
+
     }
 }

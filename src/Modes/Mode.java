@@ -1,5 +1,7 @@
 package Modes;
 
+import java.awt.*;
+
 public interface Mode {
 
     /* returns a String that contains information
@@ -18,4 +20,6 @@ public interface Mode {
      * on the end of a turn, iterates to next player
      */
     Mode nextMode();
+
+    void mouseClick(Point mouse, boolean isRightClick);
 }

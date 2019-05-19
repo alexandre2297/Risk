@@ -552,7 +552,7 @@ public class Board extends JPanel{
      * moves on to next mode after all soldiers have been placed
      * @param: mouse for the mouse click location
      */
-    private void placeSoldier(Point mouse,boolean isRightClick) {
+    public void placeSoldier(Point mouse,boolean isRightClick) {
 
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse)) {
@@ -619,7 +619,7 @@ public class Board extends JPanel{
     /* selects a country and stores it given that the current player owns it
      * @param mouse for the mouse click location
      */
-    private void selectOwnerCountry(Point mouse) {
+    public void selectOwnerCountry(Point mouse) {
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse) && c.numSoldiers > 1) {
                 selectedCountry = c;
@@ -631,7 +631,7 @@ public class Board extends JPanel{
     /* selects a country and stores it given that the current player does not own it
      * @param mouse for the mouse click location
      */
-    private void selectEnemyCountry(Point mouse) {
+    public void selectEnemyCountry(Point mouse) {
 
         // unselect the country to attack from
         if (selectedCountry.inBounds(mouse)) {
@@ -727,7 +727,7 @@ public class Board extends JPanel{
         }
     }
     
-    private void keepAttacking(Point mouse) {
+    public void keepAttacking(Point mouse) {
         
         // unselect the country to attack from
         if (selectedCountry.inBounds(mouse)) {
@@ -779,7 +779,7 @@ public class Board extends JPanel{
      * if there are no more soldiers, move on to the next mode
      * @param mouse for the mouse click location
      */
-    private void placeSoldierNewCountry(Point mouse) {
+    public void placeSoldierNewCountry(Point mouse) {
 
         if (selectedCountry.inBounds(mouse)) {
             troopsToPlace--;
@@ -800,7 +800,7 @@ public class Board extends JPanel{
     /* fortifies a soldier from one country to another given that they are adjacent
      * @param mouse for the mouse click location
      */
-    private void selectFortify(Point mouse) {
+    public void selectFortify(Point mouse) {
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
             mode = Mode.FortifyFromMode;
@@ -819,7 +819,7 @@ public class Board extends JPanel{
     /* fortifies a soldier from one country to another
      * if there are no more soldiers available, move on to next mode
      */
-    private void fortify() {
+    public void fortify() {
         selectedCountry.numSoldiers--;
         selectedSecondCountry.numSoldiers++;
 
@@ -909,7 +909,7 @@ public class Board extends JPanel{
     /* increments the turn to the next living player and resets all of the
      * board state information to the current player
      */
-    private void nextPlayer() {
+    public void nextPlayer() {
         selectedCountry = null;
         selectedSecondCountry = null;
 
