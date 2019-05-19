@@ -31,7 +31,7 @@ public class FortifyFromMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.selectOwnerCountry(mouse);
-        System.out.println("Fortify From Modes.Mode");
+        System.out.println("Fortify From Mode for player " + (Board.getTurn() + 1));
 
     }
 }

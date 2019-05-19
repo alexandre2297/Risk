@@ -6,15 +6,14 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.ArrayArrays
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import IA.IA;
+import Modes.*;
 
 
 @SuppressWarnings("serial")
@@ -38,13 +37,7 @@ public class Board extends JPanel{
     private final Dice diceInfo;
     private static Player[] players;
 
-    enum Mode {
-        InitialPlacingMode, PlacingMode, AttackFromMode, AttackToMode,
-        KeepAttackingMode, NewCountryMode, FortifyFromMode, FortifyToMode,
-        KeepFortifyingMode, GameOverMode
-    }
-
-    private Mode mode = Mode.InitialPlacingMode;
+    private Mode mode = new InitialPlacingMode(this);
 
     public Mode getMode() {
         return mode;
@@ -137,55 +130,15 @@ public class Board extends JPanel{
         initialCountryOwners(numPlayers);
         initialTroopsToPlace();
 
-        turnInfo.setText(getStringForMode());
+        turnInfo.setText(mode.getStringForMode());
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 Point mouse = e.getPoint();
 
-                switch (mode) {
-                case InitialPlacingMode: 
-                    placeSoldier(mouse,e.isMetaDown());
-                    System.out.println("Initial Placing Modes.Mode");
-                    break;
-                case PlacingMode: 
-                    placeSoldier(mouse,false);
-                    System.out.println("Placing Modes.Mode");
-                    break;
-                case AttackFromMode:
-                    selectOwnerCountry(mouse);
-                    System.out.println("Attack From Modes.Mode");
-                    break;
-                case AttackToMode:
-                    selectEnemyCountry(mouse);
-                    System.out.println("Attack To Modes.Mode");
-                    break;
-                case KeepAttackingMode:
-                    keepAttacking(mouse);
-                    System.out.println("Keep Attacking Modes.Mode");
-                    break;
-                case NewCountryMode:
-                    placeSoldierNewCountry(mouse);
-                    System.out.println("New Game.Country Modes.Mode");
-                    break;
-                case FortifyFromMode:
-                    selectOwnerCountry(mouse);
-                    System.out.println("Fortify From Modes.Mode");
-                    break;
-                case FortifyToMode:
-                    selectFortify(mouse);
-                    System.out.println("Fortify To Modes.Mode");
-                    break;
-                case KeepFortifyingMode:
-                    if (selectedSecondCountry.inBounds(mouse)) {
-                        fortify();
-                        System.out.println("Keep Fortifying Modes.Mode");
-                    }
-                    break;
-                case GameOverMode:
-                    break;
-                }
-                turnInfo.setText(getStringForMode());
+                mode.mouseClick(mouse, e.isMetaDown());
+                turnInfo.setText(mode.getStringForMode());
+
                 repaint();
             }
 
@@ -542,8 +495,8 @@ public class Board extends JPanel{
             }
         }
         if (numDead == players.length - 1) {
-            mode = Mode.GameOverMode;
-            turnInfo.setText(getStringForMode());
+            mode = new GameOverMode(this);
+            turnInfo.setText(mode.getStringForMode());
             repaint();
         }
     }
@@ -566,17 +519,17 @@ public class Board extends JPanel{
             }
         }
         if (troopsToPlace == 0) {
-            if (mode == Mode.InitialPlacingMode){
+            if (mode instanceof InitialPlacingMode){
                 turn++;
                 if (turn == players.length) {
                     turn = 0;
                     updateTroopsToPlace();
-                    nextMode();  
+                    mode.nextMode();
                 } else {
                     initialTroopsToPlace();
                 }
             } else {
-                nextMode();
+                mode.nextMode();
             }
         }
     }
@@ -588,6 +541,8 @@ public class Board extends JPanel{
         int countriesOwned = players[turn].countriesOwned.size();
         troopsToPlace = 40 - countriesOwned - (players.length - 2) * 5;
     }
+
+
     /* return true if current player owns the continent, false otherwise
      * @param continent index for continent 
      */
@@ -623,7 +578,7 @@ public class Board extends JPanel{
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse) && c.numSoldiers > 1) {
                 selectedCountry = c;
-                nextMode();
+                mode.nextMode();
             }
         }
     }
@@ -636,7 +591,7 @@ public class Board extends JPanel{
         // unselect the country to attack from
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
-            mode = Mode.AttackFromMode;
+            mode =  new AttackFromMode(this);
             return;
         }
         for (Country c : selectedCountry.adjacentCountries) {
@@ -644,27 +599,14 @@ public class Board extends JPanel{
                 selectedSecondCountry = c;
                 attack(selectedCountry, selectedSecondCountry);
                 checkOutcome();
-                if (mode == Mode.AttackToMode) {
-                    nextMode();
+                if (mode instanceof AttackToMode) {
+                    mode.nextMode();
                 }
             }
         }
     }
     
-    /* sorts an array using insertion sort
-     */
-    private void insertSort(int[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            for (int j = i; j > 0; j--) {
-                if (arr[j] > arr[j - 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j - 1];
-                    arr[j - 1] = temp;
-                }
-            }
-        }
-    }
-    
+
     /* returns a random int from 1-6
      */
     private int roll() {
@@ -688,8 +630,8 @@ public class Board extends JPanel{
             defDice[i] = roll();
         }
         
-        insertSort(atkDice);
-        insertSort(defDice);
+        Arrays.sort(atkDice);
+        Arrays.sort(defDice);
         
         if (atkDice[0] > defDice[0]) {
             enemy.numSoldiers--;
@@ -718,11 +660,11 @@ public class Board extends JPanel{
         if (selectedCountry.numSoldiers == 1) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = Mode.AttackFromMode;
+            mode = new AttackFromMode(this);
             return;
         }
         if (selectedSecondCountry.numSoldiers == 0) {
-            mode = Mode.NewCountryMode;
+            mode = new NewCountryMode(this);
             conquer();
         }
     }
@@ -733,7 +675,7 @@ public class Board extends JPanel{
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = Mode.AttackFromMode;
+            mode = new AttackFromMode(this);
             return;
         }
         
@@ -771,7 +713,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            nextMode();
+            mode.nextMode();
         }
     }
 
@@ -793,7 +735,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            nextMode();
+            mode.nextMode();
         }
     }
 
@@ -803,7 +745,7 @@ public class Board extends JPanel{
     public void selectFortify(Point mouse) {
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
-            mode = Mode.FortifyFromMode;
+            mode = new FortifyFromMode(this);
             return;
         }
 
@@ -811,7 +753,7 @@ public class Board extends JPanel{
             if (c.inBounds(mouse) && players[turn].countriesOwned.contains(c)) {
                 selectedSecondCountry = c;
                 fortify();
-                nextMode();
+                mode.nextMode();
             }
         } 
     }
@@ -825,84 +767,18 @@ public class Board extends JPanel{
 
         // immediately switch to next mode if no longer possible to fortify
         if (selectedCountry.numSoldiers == 1) {
-            nextMode();
+            mode.nextMode();
         }
     }
 
-    /* returns a String that contains information
-     * on the game state
-     */
-    public String getStringForMode() {
-        //todo: change into the state pattern
-        String init = "Game.Player " + (turn + 1) + ": ";
-        switch(mode) {
-        case InitialPlacingMode:
-            return init + "Welcome to Risk! Place troops: " + troopsToPlace + " remaining";
-        case PlacingMode:
-            return init + "Place troops: " + troopsToPlace + " remaining";
-        case AttackFromMode:
-            return init + "Choose country to attack from: ___ -> ___";
-        case AttackToMode:
-            return init + "Choose country to attack: " + selectedCountry.getName() + " -> ___";
-        case KeepAttackingMode:
-            return init + "Keep Attacking? " + selectedCountry.getName() + 
-                    " -> " + selectedSecondCountry.getName();
-        case NewCountryMode:
-            return init + "You successfully conquered " + selectedSecondCountry.getName() + 
-                    "! Add troops to your new or old country: " + troopsToPlace + " remaining";
-        case FortifyFromMode:
-            return init + "Choose country to fortify from: ___ -> ___";
-        case FortifyToMode:
-            return init + "Choose country to fortify: " + selectedCountry.getName() + " -> ___";
-        case KeepFortifyingMode:
-            return init + "Continue to fortify " + selectedCountry.getName() + " -> " +
-            selectedSecondCountry.getName() + "?";
-        case GameOverMode:
-            return init + "You won!!!";
-        default:
-            return "did you just break this game why";
-        }
-    }
-    
+
     /* Allows the player to move on to the next phase of the game
      * This function is used by the Next button
      */
     public void next() {
 
-        switch(mode) {
-        case InitialPlacingMode:
-            break;
-        case PlacingMode:
-            break;
-        case AttackFromMode:
-            mode = Mode.FortifyFromMode;
-            selectedCountry = null;
-            break;
-        case AttackToMode:
-            mode = Mode.FortifyFromMode;
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            break;
-        case KeepAttackingMode:
-            mode = Mode.AttackFromMode;
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            break;
-        case NewCountryMode:
-            break;
-        case FortifyFromMode:
-            nextPlayer();
-            break;
-        case FortifyToMode:
-            nextPlayer();
-            break;
-        case KeepFortifyingMode:
-            nextPlayer();
-            break;
-        case GameOverMode:
-            break;    
-        }
-        turnInfo.setText(getStringForMode());
+        mode.nextButtonIsPushed();
+        turnInfo.setText(mode.getStringForMode());
         repaint();
     }
 
@@ -913,16 +789,13 @@ public class Board extends JPanel{
         selectedCountry = null;
         selectedSecondCountry = null;
 
-       // Game.Player.wonCardAlready = false;
         turn = (turn + 1) % players.length;
         while (players[turn].dead) {
             turn = (turn + 1) % players.length;
         }
-        /*if (players[turn].hasSet()) {
-            mode = Modes.Mode.UseCardMode;
-        }*/
 
-        mode = Mode.PlacingMode;
+
+        mode = new PlacingMode (this);
 
         int bonus =0;
         for (int i = 0; i < Board.continentBonuses.length; i++) {
@@ -937,42 +810,6 @@ public class Board extends JPanel{
 
     }
 
-    /* iterates the mode to the next
-     * on the end of a turn, iterates to next player
-     */
-    private void nextMode() {
-        switch(mode) {
-        case InitialPlacingMode:
-            mode = Mode.PlacingMode;
-            break;
-        case PlacingMode:
-            mode = Mode.AttackFromMode;
-            break;
-        case AttackFromMode:
-            mode = Mode.AttackToMode;
-            break;
-        case AttackToMode:
-            mode = Mode.KeepAttackingMode;
-            break;
-        case KeepAttackingMode:
-            mode = Mode.NewCountryMode;
-            break;
-        case NewCountryMode:
-            mode = Mode.AttackFromMode;
-            break;
-        case FortifyFromMode:
-            mode = Mode.FortifyToMode;
-            break;
-        case FortifyToMode:
-            mode = Mode.KeepFortifyingMode;
-            break;
-        case KeepFortifyingMode:
-            nextPlayer();
-            break;
-        case GameOverMode:
-            break;
-        }
-    }
 
     /* updates the text displaying the card status
      */

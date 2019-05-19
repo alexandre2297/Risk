@@ -11,7 +11,6 @@
       <change beforePath="$PROJECT_DIR$/src/Modes/InitialPlacingMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/InitialPlacingMode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modes/KeepAttackingMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/KeepAttackingMode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modes/KeepFortifyingMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/KeepFortifyingMode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Modes/Mode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/Mode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modes/NewCountryMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/NewCountryMode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Modes/PlacingMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modes/PlacingMode.java" afterDir="false" />
     </list>
@@ -24,18 +23,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5774021">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="Board.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Game/Board.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="184" column="33" selection-start-line="184" selection-start-column="33" selection-end-line="184" selection-end-column="33" />
+                <state relative-caret-position="240">
+                  <caret line="780" column="38" selection-start-line="780" selection-start-column="38" selection-end-line="780" selection-end-column="38" />
                   <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1353#1354#0" expanded="true" />
-                    <element signature="e#1380#1381#0" expanded="true" />
+                    <element signature="e#1213#1214#0" expanded="true" />
+                    <element signature="e#1240#1241#0" expanded="true" />
                     <element signature="e#1418#1419#0" expanded="true" />
                     <element signature="e#1450#1451#0" expanded="true" />
                     <element signature="e#1417#1418#0" expanded="true" />
@@ -87,8 +85,12 @@
           <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Game/Game.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="345">
-                  <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+                <state relative-caret-position="243">
+                  <caret line="54" column="23" lean-forward="true" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
+                  <folding>
+                    <element signature="e#1720#1721#0" expanded="true" />
+                    <element signature="e#1764#1765#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -96,8 +98,8 @@
           <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Game/Player.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="105">
-                  <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+                <state relative-caret-position="180">
+                  <caret line="15" selection-start-line="15" selection-end-line="15" />
                 </state>
               </provider>
             </entry>
@@ -145,8 +147,8 @@
           <file leaf-file-name="KeepAttackingMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/KeepAttackingMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="423">
-                  <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="37" column="83" selection-start-line="37" selection-start-column="83" selection-end-line="37" selection-end-column="83" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#154#155#0" expanded="true" />
@@ -161,8 +163,8 @@
           <file leaf-file-name="NewCountryMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/NewCountryMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="465">
-                  <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="34" column="80" selection-start-line="34" selection-start-column="80" selection-end-line="34" selection-end-column="80" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#148#149#0" expanded="true" />
@@ -177,8 +179,8 @@
           <file leaf-file-name="FortifyFromMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/FortifyFromMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="452">
-                  <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="33" column="81" selection-start-line="33" selection-start-column="81" selection-end-line="33" selection-end-column="81" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#150#151#0" expanded="true" />
@@ -195,8 +197,8 @@
           <file leaf-file-name="FortifyToMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/FortifyToMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="452">
-                  <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="33" column="79" selection-start-line="33" selection-start-column="79" selection-end-line="33" selection-end-column="79" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#146#147#0" expanded="true" />
@@ -210,11 +212,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="KeepFortifyingMode.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="KeepFortifyingMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/KeepFortifyingMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="495">
-                  <caret line="35" column="20" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+                <state relative-caret-position="212">
+                  <caret line="36" column="88" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="88" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#156#157#0" expanded="true" />
@@ -229,12 +231,14 @@
           <file leaf-file-name="GameOverMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/GameOverMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="405">
-                  <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+                <state relative-caret-position="242">
+                  <caret line="33" column="93" selection-start-line="33" selection-start-column="93" selection-end-line="33" selection-end-column="93" />
                   <folding>
+                    <element signature="imports" expanded="true" />
                     <element signature="e#145#146#0" expanded="true" />
                     <element signature="e#179#180#0" expanded="true" />
                     <element signature="e#255#256#0" expanded="true" />
+                    <element signature="e#282#283#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -243,8 +247,8 @@
           <file leaf-file-name="AttackToMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/AttackToMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="480">
-                  <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="37" column="53" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#145#146#0" expanded="true" />
@@ -254,11 +258,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="InitialPlacingMode.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="InitialPlacingMode.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/Modes/InitialPlacingMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="467">
-                  <caret line="33" column="8" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
+                <state relative-caret-position="437">
+                  <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#156#157#0" expanded="true" />
@@ -273,8 +277,8 @@
           <file leaf-file-name="PlacingMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/PlacingMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="450">
-                  <caret line="32" selection-start-line="32" selection-end-line="32" />
+                <state relative-caret-position="198">
+                  <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#142#143#0" expanded="true" />
@@ -287,8 +291,8 @@
           <file leaf-file-name="AttackFromMode.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Modes/AttackFromMode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="480">
-                  <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+                <state relative-caret-position="227">
+                  <caret line="35" column="55" selection-start-line="35" selection-start-column="55" selection-end-line="35" selection-end-column="55" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#149#150#0" expanded="true" />
@@ -347,17 +351,18 @@
         <option value="$PROJECT_DIR$/src/IA.java" />
         <option value="$PROJECT_DIR$/src/Board.java" />
         <option value="$PROJECT_DIR$/src/Mode.java" />
-        <option value="$PROJECT_DIR$/src/Modes/GameOverMode.java" />
         <option value="$PROJECT_DIR$/src/Modes/Mode.java" />
-        <option value="$PROJECT_DIR$/src/Modes/PlacingMode.java" />
+        <option value="$PROJECT_DIR$/src/Game/Game.java" />
         <option value="$PROJECT_DIR$/src/Modes/InitialPlacingMode.java" />
-        <option value="$PROJECT_DIR$/src/Modes/AttackFromMode.java" />
         <option value="$PROJECT_DIR$/src/Modes/AttackToMode.java" />
-        <option value="$PROJECT_DIR$/src/Modes/KeepAttackingMode.java" />
-        <option value="$PROJECT_DIR$/src/Modes/NewCountryMode.java" />
+        <option value="$PROJECT_DIR$/src/Modes/AttackFromMode.java" />
         <option value="$PROJECT_DIR$/src/Modes/FortifyFromMode.java" />
         <option value="$PROJECT_DIR$/src/Modes/FortifyToMode.java" />
+        <option value="$PROJECT_DIR$/src/Modes/GameOverMode.java" />
+        <option value="$PROJECT_DIR$/src/Modes/KeepAttackingMode.java" />
         <option value="$PROJECT_DIR$/src/Modes/KeepFortifyingMode.java" />
+        <option value="$PROJECT_DIR$/src/Modes/NewCountryMode.java" />
+        <option value="$PROJECT_DIR$/src/Modes/PlacingMode.java" />
         <option value="$PROJECT_DIR$/src/Game/Board.java" />
       </list>
     </option>
@@ -485,18 +490,18 @@
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.328594" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32707354" />
       <window_info anchor="right" id="Palette&#9;" order="5" />
       <window_info id="Image Layers" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.3286385" />
       <window_info anchor="right" id="Maven Projects" order="7" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3286385" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Designer" order="5" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49921754" visible="true" weight="0.17715959" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49921754" visible="true" weight="0.17715959" />
       <window_info anchor="right" id="R Packages" order="8" />
       <window_info anchor="right" id="R Graphics" order="9" sideWeight="0.49921754" weight="0.329429" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286385" />
@@ -583,52 +588,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Game/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6960">
-          <caret line="476" column="20" selection-start-line="476" selection-start-column="20" selection-end-line="476" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1353#1354#0" expanded="true" />
-            <element signature="e#1380#1381#0" expanded="true" />
-            <element signature="e#1418#1419#0" expanded="true" />
-            <element signature="e#1450#1451#0" expanded="true" />
-            <element signature="e#1417#1418#0" expanded="true" />
-            <element signature="e#1450#1451#0" expanded="true" />
-            <element signature="e#1526#1527#0" expanded="true" />
-            <element signature="e#1571#1572#0" expanded="true" />
-            <element signature="e#1620#1621#0" expanded="true" />
-            <element signature="e#1659#1660#0" expanded="true" />
-            <element signature="e#1710#1711#0" expanded="true" />
-            <element signature="e#1742#1743#0" expanded="true" />
-            <element signature="e#1807#1808#0" expanded="true" />
-            <element signature="e#1850#1851#0" expanded="true" />
-            <element signature="e#1891#1892#0" expanded="true" />
-            <element signature="e#1925#1926#0" expanded="true" />
-            <element signature="e#1967#1968#0" expanded="true" />
-            <element signature="e#2002#2003#0" expanded="true" />
-            <element signature="e#2037#2038#0" expanded="true" />
-            <element signature="e#2064#2065#0" expanded="true" />
-            <element signature="e#2108#2109#0" expanded="true" />
-            <element signature="e#2141#2142#0" expanded="true" />
-            <element signature="e#2185#2186#0" expanded="true" />
-            <element signature="e#2221#2222#0" expanded="true" />
-            <element signature="e#2283#2284#0" expanded="true" />
-            <element signature="e#2334#2335#0" expanded="true" />
-            <element signature="e#2389#2390#0" expanded="true" />
-            <element signature="e#2427#2428#0" expanded="true" />
-            <element signature="e#2502#2503#0" expanded="true" />
-            <element signature="e#2557#2558#0" expanded="true" />
-            <element signature="e#2618#2619#0" expanded="true" />
-            <element signature="e#2662#2663#0" expanded="true" />
-            <element signature="e#2864#2865#0" expanded="true" />
-            <element signature="e#2894#2895#0" expanded="true" />
-            <element signature="e#2954#2955#0" expanded="true" />
-            <element signature="e#2993#2994#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Game/Dice.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -806,13 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Game/Start.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -824,32 +776,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/GameOverMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
-          <folding>
-            <element signature="e#145#146#0" expanded="true" />
-            <element signature="e#179#180#0" expanded="true" />
-            <element signature="e#255#256#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/Mode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
         </state>
       </provider>
     </entry>
@@ -867,36 +793,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/PlacingMode.java">
+    <entry file="file://$PROJECT_DIR$/src/Modes/Mode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#142#143#0" expanded="true" />
-            <element signature="e#176#177#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="345">
+          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/InitialPlacingMode.java">
+    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/awt/Graphics.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="33" column="8" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
+        <state relative-caret-position="269">
+          <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/awt/Color.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/AttackToMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="37" column="53" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#156#157#0" expanded="true" />
-            <element signature="e#190#191#0" expanded="true" />
-            <element signature="e#250#251#0" expanded="true" />
-            <element signature="e#277#278#0" expanded="true" />
+            <element signature="e#145#146#0" expanded="true" />
+            <element signature="e#179#180#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Modes/AttackFromMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        <state relative-caret-position="227">
+          <caret line="35" column="55" selection-start-line="35" selection-start-column="55" selection-end-line="35" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#149#150#0" expanded="true" />
@@ -907,50 +840,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/AttackToMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#145#146#0" expanded="true" />
-            <element signature="e#179#180#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/KeepAttackingMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#154#155#0" expanded="true" />
-            <element signature="e#188#189#0" expanded="true" />
-            <element signature="e#260#261#0" expanded="true" />
-            <element signature="e#287#288#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Modes/NewCountryMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#148#149#0" expanded="true" />
-            <element signature="e#182#183#0" expanded="true" />
-            <element signature="e#257#258#0" expanded="true" />
-            <element signature="e#284#285#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Modes/FortifyFromMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+        <state relative-caret-position="227">
+          <caret line="33" column="81" selection-start-line="33" selection-start-column="81" selection-end-line="33" selection-end-column="81" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#150#151#0" expanded="true" />
@@ -965,8 +858,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Modes/FortifyToMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+        <state relative-caret-position="227">
+          <caret line="33" column="79" selection-start-line="33" selection-start-column="79" selection-end-line="33" selection-end-column="79" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#146#147#0" expanded="true" />
@@ -979,10 +872,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/GameOverMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="33" column="93" selection-start-line="33" selection-start-column="93" selection-end-line="33" selection-end-column="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#145#146#0" expanded="true" />
+            <element signature="e#179#180#0" expanded="true" />
+            <element signature="e#255#256#0" expanded="true" />
+            <element signature="e#282#283#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/KeepAttackingMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="37" column="83" selection-start-line="37" selection-start-column="83" selection-end-line="37" selection-end-column="83" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#154#155#0" expanded="true" />
+            <element signature="e#188#189#0" expanded="true" />
+            <element signature="e#260#261#0" expanded="true" />
+            <element signature="e#287#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Modes/KeepFortifyingMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="20" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+        <state relative-caret-position="212">
+          <caret line="36" column="88" selection-start-line="36" selection-start-column="88" selection-end-line="36" selection-end-column="88" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#156#157#0" expanded="true" />
@@ -993,14 +914,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/Board.java">
+    <entry file="file://$PROJECT_DIR$/src/Modes/NewCountryMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="184" column="33" selection-start-line="184" selection-start-column="33" selection-end-line="184" selection-end-column="33" />
+        <state relative-caret-position="227">
+          <caret line="34" column="80" selection-start-line="34" selection-start-column="80" selection-end-line="34" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1353#1354#0" expanded="true" />
-            <element signature="e#1380#1381#0" expanded="true" />
+            <element signature="e#148#149#0" expanded="true" />
+            <element signature="e#182#183#0" expanded="true" />
+            <element signature="e#257#258#0" expanded="true" />
+            <element signature="e#284#285#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/PlacingMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#142#143#0" expanded="true" />
+            <element signature="e#176#177#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Modes/InitialPlacingMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#156#157#0" expanded="true" />
+            <element signature="e#190#191#0" expanded="true" />
+            <element signature="e#250#251#0" expanded="true" />
+            <element signature="e#277#278#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="54" column="23" lean-forward="true" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="23" />
+          <folding>
+            <element signature="e#1720#1721#0" expanded="true" />
+            <element signature="e#1764#1765#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="780" column="38" selection-start-line="780" selection-start-column="38" selection-end-line="780" selection-end-column="38" />
+          <folding>
+            <element signature="e#1213#1214#0" expanded="true" />
+            <element signature="e#1240#1241#0" expanded="true" />
             <element signature="e#1418#1419#0" expanded="true" />
             <element signature="e#1450#1451#0" expanded="true" />
             <element signature="e#1417#1418#0" expanded="true" />

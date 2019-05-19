@@ -2,6 +2,8 @@ package Modes;
 
 import Game.Board;
 
+import java.awt.*;
+
 public class GameOverMode implements Mode {
 
 
@@ -25,5 +27,10 @@ public class GameOverMode implements Mode {
     @Override
     public Mode nextMode() {
         return this;
+    }
+
+    @Override
+    public void mouseClick(Point mouse, boolean isRightClick) {
+        System.out.println("mouse click in game over Mode for player " + (Board.getTurn() + 1));
     }
 }

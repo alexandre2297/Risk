@@ -34,7 +34,7 @@ public class KeepFortifyingMode implements Mode {
     public void mouseClick(Point mouse, boolean isRightClick) {
         if (Board.getSelectedSecondCountry().inBounds(mouse)) {
             board.fortify();
-            System.out.println("Keep Fortifying Modes.Mode");
+            System.out.println("Keep Fortifying Mode for player " + (Board.getTurn() + 1));
         }
 
     }

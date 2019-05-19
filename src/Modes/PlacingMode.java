@@ -30,8 +30,8 @@ public class PlacingMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        board.placeSoldier(mouse, isRightClick);
-        System.out.println("Initial Placing Modes.Mode");
+        board.placeSoldier(mouse, false);
+        System.out.println("Placing Mode for player " + (Board.getTurn() + 1));
 
     }
 }

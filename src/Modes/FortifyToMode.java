@@ -31,7 +31,7 @@ public class FortifyToMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.selectFortify(mouse);
-        System.out.println("Fortify To Modes.Mode");
+        System.out.println("Fortify To Mode for player " + (Board.getTurn() + 1));
 
     }
 }
