@@ -525,12 +525,12 @@ public class Board extends JPanel{
                 if (turn == players.length) {
                     turn = 0;
                     updateTroopsToPlace();
-                    mode.nextMode();
+                    mode = mode.nextMode();
                 } else {
                     initialTroopsToPlace();
                 }
             } else {
-                mode.nextMode();
+                mode = mode.nextMode();
             }
         }
     }
@@ -579,7 +579,7 @@ public class Board extends JPanel{
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse) && c.numSoldiers > 1) {
                 selectedCountry = c;
-                mode.nextMode();
+                mode = mode.nextMode();
             }
         }
     }
@@ -601,7 +601,7 @@ public class Board extends JPanel{
                 attack(selectedCountry, selectedSecondCountry);
                 checkOutcome();
                 if (mode instanceof AttackToMode) {
-                    mode.nextMode();
+                    mode = mode.nextMode();
                 }
             }
         }
@@ -714,7 +714,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode.nextMode();
+            mode = mode.nextMode();
         }
     }
 
@@ -736,7 +736,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode.nextMode();
+            mode = mode.nextMode();
         }
     }
 
@@ -754,7 +754,7 @@ public class Board extends JPanel{
             if (c.inBounds(mouse) && players[turn].countriesOwned.contains(c)) {
                 selectedSecondCountry = c;
                 fortify();
-                mode.nextMode();
+                mode = mode.nextMode();
             }
         } 
     }
@@ -768,7 +768,7 @@ public class Board extends JPanel{
 
         // immediately switch to next mode if no longer possible to fortify
         if (selectedCountry.numSoldiers == 1) {
-            mode.nextMode();
+            mode = mode.nextMode();
         }
     }
 
