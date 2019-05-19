@@ -1,9 +1,11 @@
+package Game;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Set;
 
-/* Country object which represents the information pertaining
+/* Game.Country object which represents the information pertaining
  * to a country in the game
  */
 public class Country implements Comparable<Country> {
