@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.ArrayArrays
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -72,6 +72,7 @@ public class Board extends JPanel{
     public static int getBoardWidth() {
         return BOARD_WIDTH;
     }
+
 
     public static int getBoardHeight() {
         return BOARD_HEIGHT;
