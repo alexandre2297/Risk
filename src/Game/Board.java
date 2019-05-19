@@ -44,10 +44,15 @@ public class Board extends JPanel{
     }
 
     public void setMode(Mode mode) {
+        System.out.println("changement de Mode");
+        System.out.println("ancien mode: " + this.mode);
         this.mode = mode;
+        System.out.println("nouveau mode: " + this.mode);
+
+        System.out.println("SelectedCountry: " + getSelectedCountry());
+        System.out.println("SelectedSecondCountry: " + getSelectedSecondCountry());
+        System.out.println("");
     }
-
-
 
     public static List<Set<Country>> getContinents() {
         return continents;
@@ -99,7 +104,10 @@ public class Board extends JPanel{
     }
 
     public static void setSelectedCountry(Country selectedCountry) {
+        System.out.println("changement de selected country:");
+        System.out.println("ancienne valeur:" + selectedCountry);
         Board.selectedCountry = selectedCountry;
+        System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
     public static Country getSelectedSecondCountry() {
@@ -107,7 +115,10 @@ public class Board extends JPanel{
     }
 
     public static void setSelectedSecondCountry(Country selectedSecondCountry) {
+        System.out.println("changement de selected SECOND country:");
+        System.out.println("ancienne valeur:" + selectedCountry);
         Board.selectedSecondCountry = selectedSecondCountry;
+        System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
     public static Player[] getPlayers() {
@@ -119,7 +130,7 @@ public class Board extends JPanel{
     }
 
 
-    public Board(final JLabel turnInfo,JLabel bonus,Dice diceInfo, int numPlayers) {
+    public Board(final JLabel turnInfo, JLabel bonus,Dice diceInfo, int numPlayers) {
 
         this.turnInfo = turnInfo;
         this.diceInfo = diceInfo;
@@ -144,13 +155,12 @@ public class Board extends JPanel{
             }
 
         });
-
     }
 
     private void initializePlayers(int numPlayers) {
         players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
-            if(i==numPlayers-1) {
+            if (i == numPlayers - 1) {
                 players[i] = new IA();
             }
             else {
@@ -496,7 +506,7 @@ public class Board extends JPanel{
             }
         }
         if (numDead == players.length - 1) {
-            mode = new GameOverMode(this);
+            this.setMode(new GameOverMode(this));
             turnInfo.setText(mode.getStringForMode());
             repaint();
         }
@@ -526,14 +536,14 @@ public class Board extends JPanel{
             if (turn == players.length) {
                 turn = 0;
                 updateTroopsToPlace();
-                mode = mode.nextMode();
+                this.setMode(mode.nextMode());
                 return;
             }
             initialTroopsToPlace();
             return;
         }
 
-        mode = mode.nextMode();
+        this.setMode(mode.nextMode());
     }
 
     /* calculates the initial troops for a player to place
@@ -580,7 +590,8 @@ public class Board extends JPanel{
         for (Country c : players[turn].countriesOwned) {
             if (c.inBounds(mouse) && c.numSoldiers > 1) {
                 selectedCountry = c;
-                mode = mode.nextMode();
+                this.setMode(mode.nextMode());
+                break;
             }
         }
     }
@@ -593,7 +604,7 @@ public class Board extends JPanel{
         // unselect the country to attack from
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
-            mode =  new AttackFromMode(this);
+            this.setMode(new AttackFromMode(this));
             return;
         }
         for (Country c : selectedCountry.adjacentCountries) {
@@ -602,7 +613,7 @@ public class Board extends JPanel{
                 attack(selectedCountry, selectedSecondCountry);
                 checkOutcome();
                 if (mode instanceof AttackToMode) {
-                    mode = mode.nextMode();
+                    this.setMode(mode.nextMode());
                 }
             }
         }
@@ -662,11 +673,11 @@ public class Board extends JPanel{
         if (selectedCountry.numSoldiers == 1) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = new AttackFromMode(this);
+            this.setMode(new AttackFromMode(this));
             return;
         }
-        if (selectedSecondCountry.numSoldiers == 0) {
-            mode = new NewCountryMode(this);
+        if (selectedSecondCountry.numSoldiers < 1) {
+            this.setMode(new NewCountryMode(this));
             conquer();
         }
     }
@@ -677,7 +688,7 @@ public class Board extends JPanel{
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = new AttackFromMode(this);
+            this.setMode(new AttackFromMode(this));
             return;
         }
         
@@ -715,7 +726,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = mode.nextMode();
+            this.setMode(mode.nextMode());
         }
     }
 
@@ -737,7 +748,7 @@ public class Board extends JPanel{
         if (troopsToPlace == 0) {
             selectedCountry = null;
             selectedSecondCountry = null;
-            mode = mode.nextMode();
+            this.setMode(mode.nextMode());
         }
     }
 
@@ -747,7 +758,7 @@ public class Board extends JPanel{
     public void selectFortify(Point mouse) {
         if (selectedCountry.inBounds(mouse)) {
             selectedCountry = null;
-            mode = new FortifyFromMode(this);
+            this.setMode(new FortifyFromMode(this));
             return;
         }
 
@@ -755,7 +766,8 @@ public class Board extends JPanel{
             if (c.inBounds(mouse) && players[turn].countriesOwned.contains(c)) {
                 selectedSecondCountry = c;
                 fortify();
-                mode = mode.nextMode();
+                this.setMode(mode.nextMode());
+                break;
             }
         } 
     }
@@ -769,7 +781,7 @@ public class Board extends JPanel{
 
         // immediately switch to next mode if no longer possible to fortify
         if (selectedCountry.numSoldiers == 1) {
-            mode = mode.nextMode();
+            this.setMode(mode.nextMode());
         }
     }
 
@@ -797,7 +809,7 @@ public class Board extends JPanel{
         }
 
 
-        mode = new PlacingMode (this);
+        this.setMode(new PlacingMode (this));
 
         int bonus =0;
         for (int i = 0; i < Board.continentBonuses.length; i++) {

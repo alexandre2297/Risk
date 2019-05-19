@@ -25,7 +25,7 @@ public class PlacingMode implements Mode {
 
     @Override
     public Mode nextMode() {
-        return null;
+        return new AttackFromMode(board);
     }
 
     @Override

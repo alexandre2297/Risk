@@ -27,7 +27,7 @@ public class KeepFortifyingMode implements Mode {
     @Override
     public Mode nextMode() {
         board.nextPlayer();
-        return this;
+        return board.getMode();
     }
 
     @Override
