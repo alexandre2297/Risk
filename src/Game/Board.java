@@ -509,30 +509,31 @@ public class Board extends JPanel{
     public void placeSoldier(Point mouse,boolean isRightClick) {
 
         for (Country c : players[turn].countriesOwned) {
-            if (c.inBounds(mouse)) {
-                if(isRightClick && c.numSoldiers!=1){
-                    c.numSoldiers--;
-                    troopsToPlace++;
-                } else if(!isRightClick){
-                    c.numSoldiers++;
-                    troopsToPlace--;
-                }
+            if (! c.inBounds(mouse)) { continue; }
+
+            if (isRightClick && c.numSoldiers != 1) {
+                c.numSoldiers--;
+                troopsToPlace++;
+            } else if (! isRightClick) {
+                c.numSoldiers++;
+                troopsToPlace--;
             }
         }
-        if (troopsToPlace == 0) {
-            if (mode instanceof InitialPlacingMode){
-                turn++;
-                if (turn == players.length) {
-                    turn = 0;
-                    updateTroopsToPlace();
-                    mode = mode.nextMode();
-                } else {
-                    initialTroopsToPlace();
-                }
-            } else {
+        if (troopsToPlace != 1) { return; }
+
+        if (mode instanceof InitialPlacingMode){
+            turn++;
+            if (turn == players.length) {
+                turn = 0;
+                updateTroopsToPlace();
                 mode = mode.nextMode();
+                return;
             }
+            initialTroopsToPlace();
+            return;
         }
+
+        mode = mode.nextMode();
     }
 
     /* calculates the initial troops for a player to place
