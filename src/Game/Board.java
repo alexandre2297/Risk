@@ -157,7 +157,7 @@ public class Board extends JPanel{
         this.turnInfo = turnInfo;
         this.diceInfo = diceInfo;
         this.bonusInfo = bonus;
-        this.rules = new Rules(this, turnInfo, bonusInfo, diceInfo);
+        this.rules = new Rules(this);
 
         initializeCountries();   
         initializeContinents();

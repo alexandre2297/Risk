@@ -2,7 +2,6 @@ package Game;
 
 import Modes.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
@@ -10,7 +9,7 @@ public class Rules {
 
     private Board board;
 
-    public Rules(Board board, JLabel turnInfo, JLabel bonusInfo, Dice diceInfo) {
+    public Rules(Board board) {
         this.board = board;
     }
 
