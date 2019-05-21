@@ -18,12 +18,12 @@ public class Rules {
      */
     private void checkWin() {
         int numDead = 0;
-        for (Player p : Board.getPlayers()) {
+        for (Player p : board.getPlayers()) {
             if (p.dead) {
                 numDead++;
             }
         }
-        if (numDead == Board.getPlayers().length - 1) {
+        if (numDead == board.getPlayers().length - 1) {
             board.setMode(new GameOverMode(board));
             board.getTurnInfo().setText(board.getMode().getStringForMode());
             board.repaint();
@@ -36,23 +36,23 @@ public class Rules {
      */
     public void placeSoldier(Point mouse, boolean isRightClick) {
 
-        for (Country c : Board.getPlayers()[Board.getTurn()].countriesOwned) {
+        for (Country c : board.getPlayers()[board.getTurn()].countriesOwned) {
             if (! c.inBounds(mouse)) { continue; }
 
             if (isRightClick && c.numSoldiers != 1) {
                 c.numSoldiers--;
-                Board.setTroopsToPlace(Board.getTroopsToPlace() + 1);
+                board.setTroopsToPlace(board.getTroopsToPlace() + 1);
             } else if (! isRightClick) {
                 c.numSoldiers++;
-                Board.setTroopsToPlace(Board.getTroopsToPlace() - 1);
+                board.setTroopsToPlace(board.getTroopsToPlace() - 1);
             }
         }
-        if (Board.getTroopsToPlace() != 1) { return; }
+        if (board.getTroopsToPlace() != 1) { return; }
 
         if (board.getMode() instanceof InitialPlacingMode){
-            Board.setTurn(Board.getTurn() + 1);
-            if (Board.getTurn() == Board.getPlayers().length) {
-                Board.setTurn(0);
+            board.setTurn(board.getTurn() + 1);
+            if (board.getTurn() == board.getPlayers().length) {
+                board.setTurn(0);
                 updateTroopsToPlace();
                 board.setMode(board.getMode().nextMode());
                 return;
@@ -68,8 +68,8 @@ public class Rules {
      */
     public void initialTroopsToPlace() {
 
-        int countriesOwned = Board.getPlayers()[Board.getTurn()].countriesOwned.size();
-        Board.setTroopsToPlace(40 - countriesOwned - (Board.getPlayers().length - 2) * 5);
+        int countriesOwned = board.getPlayers()[board.getTurn()].countriesOwned.size();
+        board.setTroopsToPlace(40 - countriesOwned - (board.getPlayers().length - 2) * 5);
     }
 
 
@@ -77,8 +77,8 @@ public class Rules {
      * @param continent index for continent
      */
     private boolean continentOwned(int continent) {
-        for (Country c : Board.getContinents().get(continent)) {
-            if (!Board.getPlayers()[Board.getTurn()].countriesOwned.contains(c)) {
+        for (Country c : board.getContinents().get(continent)) {
+            if (!board.getPlayers()[board.getTurn()].countriesOwned.contains(c)) {
                 return false;
             }
         }
@@ -90,12 +90,12 @@ public class Rules {
      */
     private void updateTroopsToPlace() {
 
-        int countryBonus = Board.getPlayers()[Board.getTurn()].countriesOwned.size() / 3;
-        Board.setTroopsToPlace(Math.max(3, countryBonus));
+        int countryBonus = board.getPlayers()[board.getTurn()].countriesOwned.size() / 3;
+        board.setTroopsToPlace(Math.max(3, countryBonus));
 
-        for (int i = 0; i < Board.getContinentBonuses().length; i++) {
+        for (int i = 0; i < board.getContinentBonuses().length; i++) {
             if (continentOwned(i)) {
-                Board.setTroopsToPlace(Board.getTroopsToPlace() + Board.getContinentBonuses()[i]);
+                board.setTroopsToPlace(board.getTroopsToPlace() + board.getContinentBonuses()[i]);
             }
         }
     }
@@ -105,9 +105,9 @@ public class Rules {
      * @param mouse for the mouse click location
      */
     public void selectOwnerCountry(Point mouse) {
-        for (Country c : Board.getPlayers()[Board.getTurn()].countriesOwned) {
+        for (Country c : board.getPlayers()[board.getTurn()].countriesOwned) {
             if (c.inBounds(mouse) && c.numSoldiers > 1) {
-                Board.setSelectedCountry(c);
+                board.setSelectedCountry(c);
                 board.setMode(board.getMode().nextMode());
                 break;
             }
@@ -120,15 +120,15 @@ public class Rules {
     public void selectEnemyCountry(Point mouse) {
 
         // unselect the country to attack from
-        if (Board.getSelectedCountry().inBounds(mouse)) {
-            Board.setSelectedCountry(null);
+        if (board.getSelectedCountry().inBounds(mouse)) {
+            board.setSelectedCountry(null);
             board.setMode(new AttackFromMode(board));
             return;
         }
-        for (Country c : Board.getSelectedCountry().adjacentCountries) {
-            if (c.inBounds(mouse) && ! Board.getPlayers()[Board.getTurn()].countriesOwned.contains(c)) {
-                Board.setSelectedSecondCountry(c);
-                attack(Board.getSelectedCountry(), Board.getSelectedSecondCountry());
+        for (Country c : board.getSelectedCountry().adjacentCountries) {
+            if (c.inBounds(mouse) && ! board.getPlayers()[board.getTurn()].countriesOwned.contains(c)) {
+                board.setSelectedSecondCountry(c);
+                attack(board.getSelectedCountry(), board.getSelectedSecondCountry());
                 checkOutcome();
                 if (board.getMode() instanceof AttackToMode) {
                     board.setMode(board.getMode().nextMode());
@@ -170,7 +170,7 @@ public class Rules {
             own.numSoldiers--;
         }
         if (atkDice[1] != 0 && defDice[1] != 0) {
-            if (atkDice[1] > defDice[1] && atkDice[1] != 0 && defDice[1] != 0) {
+            if (atkDice[1] > defDice[1]) {
                 enemy.numSoldiers--;
             } else {
                 own.numSoldiers--;
@@ -188,13 +188,13 @@ public class Rules {
     /* checks the number of available soldiers to see if a battle is over
      */
     private void checkOutcome() {
-        if (Board.getSelectedCountry().numSoldiers == 1) {
-            Board.setSelectedCountry(null);
-            Board.setSelectedSecondCountry(null);
+        if (board.getSelectedCountry().numSoldiers == 1) {
+            board.setSelectedCountry(null);
+            board.setSelectedSecondCountry(null);
             board.setMode(new AttackFromMode(board));
             return;
         }
-        if (Board.getSelectedSecondCountry().numSoldiers < 1) {
+        if (board.getSelectedSecondCountry().numSoldiers < 1) {
             board.setMode(new NewCountryMode(board));
             conquer();
         }
@@ -203,15 +203,15 @@ public class Rules {
     public void keepAttacking(Point mouse) {
 
         // unselect the country to attack from
-        if (Board.getSelectedCountry().inBounds(mouse)) {
-            Board.setSelectedCountry(null);
-            Board.setSelectedSecondCountry(null);
+        if (board.getSelectedCountry().inBounds(mouse)) {
+            board.setSelectedCountry(null);
+            board.setSelectedSecondCountry(null);
             board.setMode(new AttackFromMode(board));
             return;
         }
 
-        if (Board.getSelectedSecondCountry().inBounds(mouse)) {
-            attack(Board.getSelectedCountry(), Board.getSelectedSecondCountry());
+        if (board.getSelectedSecondCountry().inBounds(mouse)) {
+            attack(board.getSelectedCountry(), board.getSelectedSecondCountry());
             checkOutcome();
         }
 
@@ -221,13 +221,13 @@ public class Rules {
      */
     private void conquer() {
         Player enemy = null;
-        for (Player p : Board.getPlayers()) {
-            if (p.countriesOwned.contains(Board.getSelectedSecondCountry())) {
+        for (Player p : board.getPlayers()) {
+            if (p.countriesOwned.contains(board.getSelectedSecondCountry())) {
                 enemy = p;
             }
         }
-        enemy.countriesOwned.remove(Board.getSelectedSecondCountry());
-        Board.getPlayers()[Board.getTurn()].countriesOwned.add(Board.getSelectedSecondCountry());
+        enemy.countriesOwned.remove(board.getSelectedSecondCountry());
+        board.getPlayers()[board.getTurn()].countriesOwned.add(board.getSelectedSecondCountry());
 
         if (enemy.countriesOwned.isEmpty()) {
             enemy.dead = true;
@@ -236,14 +236,14 @@ public class Rules {
             }*/
         }
         checkWin();
-        Board.getSelectedSecondCountry().numSoldiers = 1;
-        Board.setTroopsToPlace(Board.getSelectedCountry().numSoldiers - 2);
-        Board.getSelectedCountry().numSoldiers = 1;
+        board.getSelectedSecondCountry().numSoldiers = 1;
+        board.setTroopsToPlace(board.getSelectedCountry().numSoldiers - 2);
+        board.getSelectedCountry().numSoldiers = 1;
 
         // deal with edge case where there are no remaining soldiers right after a conquest
-        if (Board.getTroopsToPlace() == 0) {
-            Board.setSelectedCountry(null);
-            Board.setSelectedSecondCountry(null);
+        if (board.getTroopsToPlace() == 0) {
+            board.setSelectedCountry(null);
+            board.setSelectedSecondCountry(null);
             board.setMode(board.getMode().nextMode());
         }
     }
@@ -254,18 +254,18 @@ public class Rules {
      */
     public void placeSoldierNewCountry(Point mouse) {
 
-        if (Board.getSelectedCountry().inBounds(mouse)) {
-            Board.setTroopsToPlace(Board.getTroopsToPlace() - 1);
-            Board.getSelectedCountry().numSoldiers++;
+        if (board.getSelectedCountry().inBounds(mouse)) {
+            board.setTroopsToPlace(board.getTroopsToPlace() - 1);
+            board.getSelectedCountry().numSoldiers++;
         }
-        if (Board.getSelectedSecondCountry().inBounds(mouse)) {
-            Board.setTroopsToPlace(Board.getTroopsToPlace() - 1);
-            Board.getSelectedSecondCountry().numSoldiers++;
+        if (board.getSelectedSecondCountry().inBounds(mouse)) {
+            board.setTroopsToPlace(board.getTroopsToPlace() - 1);
+            board.getSelectedSecondCountry().numSoldiers++;
         }
 
-        if (Board.getTroopsToPlace() == 0) {
-            Board.setSelectedCountry(null);
-            Board.setSelectedSecondCountry(null);
+        if (board.getTroopsToPlace() == 0) {
+            board.setSelectedCountry(null);
+            board.setSelectedSecondCountry(null);
             board.setMode(board.getMode().nextMode());
         }
     }
@@ -274,15 +274,15 @@ public class Rules {
      * @param mouse for the mouse click location
      */
     public void selectFortify(Point mouse) {
-        if (Board.getSelectedCountry().inBounds(mouse)) {
-            Board.setSelectedCountry(null);
+        if (board.getSelectedCountry().inBounds(mouse)) {
+            board.setSelectedCountry(null);
             board.setMode(new FortifyFromMode(board));
             return;
         }
 
-        for (Country c : Board.getSelectedCountry().adjacentCountries) {
-            if (c.inBounds(mouse) && Board.getPlayers()[Board.getTurn()].countriesOwned.contains(c)) {
-                Board.setSelectedSecondCountry(c);
+        for (Country c : board.getSelectedCountry().adjacentCountries) {
+            if (c.inBounds(mouse) && board.getPlayers()[board.getTurn()].countriesOwned.contains(c)) {
+                board.setSelectedSecondCountry(c);
                 fortify();
                 board.setMode(board.getMode().nextMode());
                 break;
@@ -294,11 +294,11 @@ public class Rules {
      * if there are no more soldiers available, move on to next mode
      */
     public void fortify() {
-        Board.getSelectedCountry().numSoldiers--;
-        Board.getSelectedSecondCountry().numSoldiers++;
+        board.getSelectedCountry().numSoldiers--;
+        board.getSelectedSecondCountry().numSoldiers++;
 
         // immediately switch to next mode if no longer possible to fortify
-        if (Board.getSelectedCountry().numSoldiers == 1) {
+        if (board.getSelectedCountry().numSoldiers == 1) {
             board.setMode(board.getMode().nextMode());
         }
     }
@@ -318,21 +318,21 @@ public class Rules {
      * board state information to the current player
      */
     public void nextPlayer() {
-        Board.setSelectedCountry(null);
-        Board.setSelectedSecondCountry(null);
+        board.setSelectedCountry(null);
+        board.setSelectedSecondCountry(null);
 
-        Board.setTurn((Board.getTurn() + 1) % Board.getPlayers().length);
-        while (Board.getPlayers()[Board.getTurn()].dead) {
-            Board.setTurn((Board.getTurn() + 1) % Board.getPlayers().length);
+        board.setTurn((board.getTurn() + 1) % board.getPlayers().length);
+        while (board.getPlayers()[board.getTurn()].dead) {
+            board.setTurn((board.getTurn() + 1) % board.getPlayers().length);
         }
 
 
         board.setMode(new PlacingMode (board));
 
         int bonus =0;
-        for (int i = 0; i < Board.getContinentBonuses().length; i++) {
+        for (int i = 0; i < board.getContinentBonuses().length; i++) {
             if (continentOwned(i)) {
-                bonus += Board.getContinentBonuses()[i];
+                bonus += board.getContinentBonuses()[i];
             }
         }
         board.getBonusInfo().setText("Bonus : "+bonus);

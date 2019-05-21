@@ -14,8 +14,8 @@ public class FortifyToMode implements Mode {
 
     @Override
     public String getStringForMode() {
-        String init = "Game.Player " + (Board.getTurn() + 1) + ": ";
-        return init + "Choose country to fortify: " + Board.getSelectedCountry().getName() + " -> ___";
+        String init = "Game.Player " + (board.getTurn() + 1) + ": ";
+        return init + "Choose country to fortify: " + board.getSelectedCountry().getName() + " -> ___";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class FortifyToMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.getRules().selectFortify(mouse);
-        System.out.println("Fortify To Mode for player " + (Board.getTurn() + 1));
+        System.out.println("Fortify To Mode for player " + (board.getTurn() + 1));
 
     }
 }

@@ -14,9 +14,9 @@ public class KeepFortifyingMode implements Mode {
 
     @Override
     public String getStringForMode() {
-        String init = "Game.Player " + (Board.getTurn() + 1) + ": ";
-        return init + "Continue to fortify " + Board.getSelectedCountry().getName() + " -> " +
-                Board.getSelectedSecondCountry().getName() + "?";
+        String init = "Game.Player " + (board.getTurn() + 1) + ": ";
+        return init + "Continue to fortify " + board.getSelectedCountry().getName() + " -> " +
+                board.getSelectedSecondCountry().getName() + "?";
     }
 
     @Override
@@ -32,9 +32,9 @@ public class KeepFortifyingMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        if (Board.getSelectedSecondCountry().inBounds(mouse)) {
+        if (board.getSelectedSecondCountry().inBounds(mouse)) {
             board.getRules().fortify();
-            System.out.println("Keep Fortifying Mode for player " + (Board.getTurn() + 1));
+            System.out.println("Keep Fortifying Mode for player " + (board.getTurn() + 1));
         }
 
     }

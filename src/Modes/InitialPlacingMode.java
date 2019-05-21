@@ -14,8 +14,8 @@ public class InitialPlacingMode implements Mode {
 
     @Override
     public String getStringForMode() {
-        String init = "Game.Player " + (Board.getTurn() + 1) + ": ";
-        return init + "Welcome to Risk! Place troops: " + Board.getTroopsToPlace() + " remaining";
+        String init = "Game.Player " + (board.getTurn() + 1) + ": ";
+        return init + "Welcome to Risk! Place troops: " + board.getTroopsToPlace() + " remaining";
     }
 
     @Override
@@ -32,6 +32,6 @@ public class InitialPlacingMode implements Mode {
     public void mouseClick(Point mouse, boolean isRightClick) {
 
         board.getRules().placeSoldier(mouse, isRightClick);
-        System.out.println("Initial Placing Mode for player" + (Board.getTurn() + 1));
+        System.out.println("Initial Placing Mode for player" + (board.getTurn() + 1));
     }
 }

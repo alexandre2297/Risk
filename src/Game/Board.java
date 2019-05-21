@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,24 +27,24 @@ public class Board extends JPanel{
     }
 
     private Rules rules;
-    private static List<Set<Country>> continents;
-    private static final int[] continentBonuses = {5, 2, 5, 3, 7, 2};
+    private List<Set<Country>> continents;
+    private final int[] continentBonuses = {5, 2, 5, 3, 7, 2};
     
-    static Country[] countries;
-    public static final int BOARD_WIDTH = 900;
-    public static final int BOARD_HEIGHT = 600;
-    public static final Color[] colors = {Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN, 
+    Country[] countries;
+    public final int BOARD_WIDTH = 900;
+    public final int BOARD_HEIGHT = 600;
+    public final Color[] colors = {Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN,
         Color.CYAN, Color.MAGENTA};
     
-    private static int turn = 0;
+    private int turn = 0;
     
-    private static int troopsToPlace;
-    private static Country selectedCountry;
-    private static Country selectedSecondCountry;
+    private int troopsToPlace;
+    private Country selectedCountry;
+    private Country selectedSecondCountry;
     private final JLabel turnInfo;
     private final JLabel bonusInfo;
     private final Dice diceInfo;
-    private static Player[] players;
+    private Player[] players;
 
     private Mode mode = new InitialPlacingMode(this);
 
@@ -77,79 +76,79 @@ public class Board extends JPanel{
     }
 
 
-    public static List<Set<Country>> getContinents() {
+    public List<Set<Country>> getContinents() {
         return continents;
     }
 
-    public static void setContinents(List<Set<Country>> continents) {
-        Board.continents = continents;
+    public void setContinents(List<Set<Country>> continents) {
+        this.continents = continents;
     }
 
-    public static int[] getContinentBonuses() {
+    public int[] getContinentBonuses() {
         return continentBonuses;
     }
 
-    public static Country[] getCountries() {
+    public Country[] getCountries() {
         return countries;
     }
 
-    public static void setCountries(Country[] countries) {
-        Board.countries = countries;
+    public void setCountries(Country[] countries) {
+        this.countries = countries;
     }
 
-    public static int getBoardWidth() {
+    public int getBoardWidth() {
         return BOARD_WIDTH;
     }
 
 
-    public static int getBoardHeight() {
+    public int getBoardHeight() {
         return BOARD_HEIGHT;
     }
 
-    public static int getTurn() {
+    public int getTurn() {
         return turn;
     }
 
-    public static void setTurn(int turn) {
-        Board.turn = turn;
+    public void setTurn(int turn) {
+        this.turn = turn;
     }
 
-    public static int getTroopsToPlace() {
+    public int getTroopsToPlace() {
         return troopsToPlace;
     }
 
-    public static void setTroopsToPlace(int troopsToPlace) {
-        Board.troopsToPlace = troopsToPlace;
+    public void setTroopsToPlace(int troopsToPlace) {
+        this.troopsToPlace = troopsToPlace;
     }
 
-    public static Country getSelectedCountry() {
+    public Country getSelectedCountry() {
         return selectedCountry;
     }
 
-    public static void setSelectedCountry(Country selectedCountry) {
+    public void setSelectedCountry(Country selectedCountry) {
         System.out.println("changement de selected country:");
         System.out.println("ancienne valeur:" + selectedCountry);
-        Board.selectedCountry = selectedCountry;
+        this.selectedCountry = selectedCountry;
         System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
-    public static Country getSelectedSecondCountry() {
+    public Country getSelectedSecondCountry() {
         return selectedSecondCountry;
     }
 
-    public static void setSelectedSecondCountry(Country selectedSecondCountry) {
+    public void setSelectedSecondCountry(Country selectedSecondCountry) {
         System.out.println("changement de selected SECOND country:");
         System.out.println("ancienne valeur:" + selectedCountry);
-        Board.selectedSecondCountry = selectedSecondCountry;
+        this.selectedSecondCountry = selectedSecondCountry;
         System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
-    public static Player[] getPlayers() {
+    public Player[] getPlayers() {
         return players;
     }
 
-    public static void setPlayers(Player[] players) {
-        Board.players = players;
+    public void setPlayers(Player[] players) {
+        this.players = players;
     }
 
 

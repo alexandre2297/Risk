@@ -14,8 +14,8 @@ public class PlacingMode implements Mode {
 
     @Override
     public String getStringForMode() {
-        String init = "Game.Player " + (Board.getTurn() + 1) + ": ";
-        return init + "Place troops: " + Board.getTroopsToPlace() + " remaining";
+        String init = "Game.Player " + (board.getTurn() + 1) + ": ";
+        return init + "Place troops: " + board.getTroopsToPlace() + " remaining";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PlacingMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.getRules().placeSoldier(mouse, false);
-        System.out.println("Placing Mode for player " + (Board.getTurn() + 1));
+        System.out.println("Placing Mode for player " + (board.getTurn() + 1));
 
     }
 }

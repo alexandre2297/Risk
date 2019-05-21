@@ -14,16 +14,16 @@ public class KeepAttackingMode implements Mode {
 
     @Override
     public String getStringForMode() {
-        String init = "Game.Player " + (Board.getTurn() + 1) + ": ";
-        return init + "Keep Attacking? " + Board.getSelectedCountry().getName() +
-                " -> " + Board.getSelectedSecondCountry().getName();
+        String init = "Game.Player " + (board.getTurn() + 1) + ": ";
+        return init + "Keep Attacking? " + board.getSelectedCountry().getName() +
+                " -> " + board.getSelectedSecondCountry().getName();
     }
 
     @Override
     public void nextButtonIsPushed() {
 
-        Board.setSelectedCountry(null);
-        Board.setSelectedSecondCountry(null);
+        board.setSelectedCountry(null);
+        board.setSelectedSecondCountry(null);
         board.setMode(new AttackFromMode(board));
     }
 
@@ -35,7 +35,7 @@ public class KeepAttackingMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.getRules().keepAttacking(mouse);
-        System.out.println("Keep Attacking Mode for player " + (Board.getTurn() + 1));
+        System.out.println("Keep Attacking Mode for player " + (board.getTurn() + 1));
 
     }
 }
