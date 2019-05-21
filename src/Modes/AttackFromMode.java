@@ -32,7 +32,7 @@ public class AttackFromMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        board.selectOwnerCountry(mouse);
+        board.getRules().selectOwnerCountry(mouse);
         System.out.println("Attack From Mode for player " + (Board.getTurn() + 1));
 
     }

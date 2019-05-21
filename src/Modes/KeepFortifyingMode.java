@@ -21,19 +21,19 @@ public class KeepFortifyingMode implements Mode {
 
     @Override
     public void nextButtonIsPushed() {
-        board.nextPlayer();
+        board.getRules().nextPlayer();
     }
 
     @Override
     public Mode nextMode() {
-        board.nextPlayer();
+        board.getRules().nextPlayer();
         return board.getMode();
     }
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         if (Board.getSelectedSecondCountry().inBounds(mouse)) {
-            board.fortify();
+            board.getRules().fortify();
             System.out.println("Keep Fortifying Mode for player " + (Board.getTurn() + 1));
         }
 

@@ -52,7 +52,7 @@ public class Game implements Runnable {
         final JButton next = new JButton("Next action");
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                board.next();
+                board.getRules().next();
             }
         });
         statusPanel.add(bonus);

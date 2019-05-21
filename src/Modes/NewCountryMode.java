@@ -31,7 +31,7 @@ public class NewCountryMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        board.placeSoldierNewCountry(mouse);
+        board.getRules().placeSoldierNewCountry(mouse);
         System.out.println("New Country Mode for player " + (Board.getTurn() + 1));
 
     }

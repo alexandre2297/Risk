@@ -18,6 +18,16 @@ import Modes.*;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel{
+
+    public Rules getRules() {
+        return rules;
+    }
+
+    public void setRules(Rules rules) {
+        this.rules = rules;
+    }
+
+    private Rules rules;
     private static List<Set<Country>> continents;
     private static final int[] continentBonuses = {5, 2, 5, 3, 7, 2};
     
@@ -53,6 +63,19 @@ public class Board extends JPanel{
         System.out.println("SelectedSecondCountry: " + getSelectedSecondCountry());
         System.out.println("");
     }
+
+    public JLabel getTurnInfo() {
+        return turnInfo;
+    }
+
+    public JLabel getBonusInfo() {
+        return bonusInfo;
+    }
+
+    public Dice getDiceInfo() {
+        return diceInfo;
+    }
+
 
     public static List<Set<Country>> getContinents() {
         return continents;
@@ -135,12 +158,13 @@ public class Board extends JPanel{
         this.turnInfo = turnInfo;
         this.diceInfo = diceInfo;
         this.bonusInfo = bonus;
+        this.rules = new Rules(this, turnInfo, bonusInfo, diceInfo);
 
         initializeCountries();   
         initializeContinents();
         initializePlayers(numPlayers);
         initialCountryOwners(numPlayers);
-        initialTroopsToPlace();
+        rules.initialTroopsToPlace();
 
         turnInfo.setText(mode.getStringForMode());
 
@@ -496,333 +520,7 @@ public class Board extends JPanel{
         g.drawLine(770, 360, 800, 335);
     }
 
-    /* ends the game if only one player is remaining
-     */
-    private void checkWin() {
-        int numDead = 0;
-        for (Player p : players) {
-            if (p.dead) {
-                numDead++;
-            }
-        }
-        if (numDead == players.length - 1) {
-            this.setMode(new GameOverMode(this));
-            turnInfo.setText(mode.getStringForMode());
-            repaint();
-        }
-    }
 
-    /* places soldier in a country provided the current player owns the country
-     * moves on to next mode after all soldiers have been placed
-     * @param: mouse for the mouse click location
-     */
-    public void placeSoldier(Point mouse,boolean isRightClick) {
-
-        for (Country c : players[turn].countriesOwned) {
-            if (! c.inBounds(mouse)) { continue; }
-
-            if (isRightClick && c.numSoldiers != 1) {
-                c.numSoldiers--;
-                troopsToPlace++;
-            } else if (! isRightClick) {
-                c.numSoldiers++;
-                troopsToPlace--;
-            }
-        }
-        if (troopsToPlace != 1) { return; }
-
-        if (mode instanceof InitialPlacingMode){
-            turn++;
-            if (turn == players.length) {
-                turn = 0;
-                updateTroopsToPlace();
-                this.setMode(mode.nextMode());
-                return;
-            }
-            initialTroopsToPlace();
-            return;
-        }
-
-        this.setMode(mode.nextMode());
-    }
-
-    /* calculates the initial troops for a player to place
-     */
-    private void initialTroopsToPlace() {
-
-        int countriesOwned = players[turn].countriesOwned.size();
-        troopsToPlace = 40 - countriesOwned - (players.length - 2) * 5;
-    }
-
-
-    /* return true if current player owns the continent, false otherwise
-     * @param continent index for continent 
-     */
-    private boolean continentOwned(int continent) {
-        for (Country c : continents.get(continent)) {
-            if (!players[turn].countriesOwned.contains(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /* calculates the number of troops a player can place at 
-     * the beginning of his/her turn
-     */
-    private void updateTroopsToPlace() {
-
-        int countryBonus = players[turn].countriesOwned.size() / 3;
-        troopsToPlace = Math.max(3, countryBonus);
-
-        for (int i = 0; i < Board.continentBonuses.length; i++) {
-            if (continentOwned(i)) {
-                troopsToPlace += continentBonuses[i];
-            }
-        }
-    }
-
-
-    /* selects a country and stores it given that the current player owns it
-     * @param mouse for the mouse click location
-     */
-    public void selectOwnerCountry(Point mouse) {
-        for (Country c : players[turn].countriesOwned) {
-            if (c.inBounds(mouse) && c.numSoldiers > 1) {
-                selectedCountry = c;
-                this.setMode(mode.nextMode());
-                break;
-            }
-        }
-    }
-
-    /* selects a country and stores it given that the current player does not own it
-     * @param mouse for the mouse click location
-     */
-    public void selectEnemyCountry(Point mouse) {
-
-        // unselect the country to attack from
-        if (selectedCountry.inBounds(mouse)) {
-            selectedCountry = null;
-            this.setMode(new AttackFromMode(this));
-            return;
-        }
-        for (Country c : selectedCountry.adjacentCountries) {
-            if (c.inBounds(mouse) && !players[turn].countriesOwned.contains(c)) {
-                selectedSecondCountry = c;
-                attack(selectedCountry, selectedSecondCountry);
-                checkOutcome();
-                if (mode instanceof AttackToMode) {
-                    this.setMode(mode.nextMode());
-                }
-            }
-        }
-    }
-    
-
-    /* returns a random int from 1-6
-     */
-    private int roll() {
-        return (int) Math.ceil(6 * Math.random());
-    }
-
-    /* simulates the dice rolling for an attack
-     * number of dice is dependent on available soldiers
-     * @param own for the attacking country
-     * @param enemy for the defending country
-     */
-    private void attack(Country own, Country enemy) {
-        int[] atkDice = new int[3];
-        int[] defDice = new int[2];
-        
-        for (int i = 0; i < Math.min(atkDice.length, own.numSoldiers - 1); i++) {
-            atkDice[i] = roll();
-        }
-        
-        for (int i = 0; i < Math.min(defDice.length, enemy.numSoldiers); i++) {
-            defDice[i] = roll();
-        }
-        
-        Arrays.sort(atkDice);
-        Arrays.sort(defDice);
-        
-        if (atkDice[0] > defDice[0]) {
-            enemy.numSoldiers--;
-        } else {
-            own.numSoldiers--;
-        }
-        if (atkDice[1] != 0 && defDice[1] != 0) {
-            if (atkDice[1] > defDice[1] && atkDice[1] != 0 && defDice[1] != 0) {
-                enemy.numSoldiers--;
-            } else {
-                own.numSoldiers--;
-            }
-        }
-        
-        diceInfo.dice[0].update(atkDice[0]);
-        diceInfo.dice[1].update(defDice[0]);
-        diceInfo.dice[2].update(atkDice[1]);
-        diceInfo.dice[3].update(defDice[1]);
-        diceInfo.dice[4].update(atkDice[2]);
-        diceInfo.repaint();
-    }
-
-    /* checks the number of available soldiers to see if a battle is over
-     */
-    private void checkOutcome() {
-        if (selectedCountry.numSoldiers == 1) {
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            this.setMode(new AttackFromMode(this));
-            return;
-        }
-        if (selectedSecondCountry.numSoldiers < 1) {
-            this.setMode(new NewCountryMode(this));
-            conquer();
-        }
-    }
-    
-    public void keepAttacking(Point mouse) {
-        
-        // unselect the country to attack from
-        if (selectedCountry.inBounds(mouse)) {
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            this.setMode(new AttackFromMode(this));
-            return;
-        }
-        
-        if (selectedSecondCountry.inBounds(mouse)) {
-            attack(selectedCountry, selectedSecondCountry);
-            checkOutcome();
-        }
-        
-    }
-
-    /* takes all the troops remaining after a conquest and allow them to be placed
-     */
-    private void conquer() {
-        Player enemy = null;
-        for (Player p : players) {
-            if (p.countriesOwned.contains(selectedSecondCountry)) {
-                enemy = p;
-            }
-        }
-        enemy.countriesOwned.remove(selectedSecondCountry);
-        players[turn].countriesOwned.add(selectedSecondCountry);
-
-        if (enemy.countriesOwned.isEmpty()) {
-            enemy.dead = true;
-           /* for (int i = 0; i < enemy.cards.length; i++) {
-                players[turn].cards[i] += enemy.cards[i];
-            }*/
-        }
-        checkWin();
-        selectedSecondCountry.numSoldiers = 1;
-        troopsToPlace = selectedCountry.numSoldiers - 2;
-        selectedCountry.numSoldiers = 1;
-
-        // deal with edge case where there are no remaining soldiers right after a conquest
-        if (troopsToPlace == 0) {
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            this.setMode(mode.nextMode());
-        }
-    }
-
-    /* place a soldier in a newly conquered country 
-     * if there are no more soldiers, move on to the next mode
-     * @param mouse for the mouse click location
-     */
-    public void placeSoldierNewCountry(Point mouse) {
-
-        if (selectedCountry.inBounds(mouse)) {
-            troopsToPlace--;
-            selectedCountry.numSoldiers++;
-        }
-        if (selectedSecondCountry.inBounds(mouse)) {
-            troopsToPlace--;
-            selectedSecondCountry.numSoldiers++;
-        }
-
-        if (troopsToPlace == 0) {
-            selectedCountry = null;
-            selectedSecondCountry = null;
-            this.setMode(mode.nextMode());
-        }
-    }
-
-    /* fortifies a soldier from one country to another given that they are adjacent
-     * @param mouse for the mouse click location
-     */
-    public void selectFortify(Point mouse) {
-        if (selectedCountry.inBounds(mouse)) {
-            selectedCountry = null;
-            this.setMode(new FortifyFromMode(this));
-            return;
-        }
-
-        for (Country c : selectedCountry.adjacentCountries) {
-            if (c.inBounds(mouse) && players[turn].countriesOwned.contains(c)) {
-                selectedSecondCountry = c;
-                fortify();
-                this.setMode(mode.nextMode());
-                break;
-            }
-        } 
-    }
-
-    /* fortifies a soldier from one country to another
-     * if there are no more soldiers available, move on to next mode
-     */
-    public void fortify() {
-        selectedCountry.numSoldiers--;
-        selectedSecondCountry.numSoldiers++;
-
-        // immediately switch to next mode if no longer possible to fortify
-        if (selectedCountry.numSoldiers == 1) {
-            this.setMode(mode.nextMode());
-        }
-    }
-
-
-    /* Allows the player to move on to the next phase of the game
-     * This function is used by the Next button
-     */
-    public void next() {
-
-        mode.nextButtonIsPushed();
-        turnInfo.setText(mode.getStringForMode());
-        repaint();
-    }
-
-    /* increments the turn to the next living player and resets all of the
-     * board state information to the current player
-     */
-    public void nextPlayer() {
-        selectedCountry = null;
-        selectedSecondCountry = null;
-
-        turn = (turn + 1) % players.length;
-        while (players[turn].dead) {
-            turn = (turn + 1) % players.length;
-        }
-
-
-        this.setMode(new PlacingMode (this));
-
-        int bonus =0;
-        for (int i = 0; i < Board.continentBonuses.length; i++) {
-            if (continentOwned(i)) {
-                bonus += Board.continentBonuses[i];
-            }
-        }
-        bonusInfo.setText("Bonus : "+bonus);
-
-        updateTroopsToPlace();
-
-
-    }
 
 
     /* updates the text displaying the card status

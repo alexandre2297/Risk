@@ -20,7 +20,7 @@ public class FortifyToMode implements Mode {
 
     @Override
     public void nextButtonIsPushed() {
-        board.nextPlayer();
+        board.getRules().nextPlayer();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class FortifyToMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        board.selectFortify(mouse);
+        board.getRules().selectFortify(mouse);
         System.out.println("Fortify To Mode for player " + (Board.getTurn() + 1));
 
     }
