@@ -306,7 +306,7 @@ public class Rules {
     /* Allows the player to move on to the next phase of the game
      * This function is used by the Next button
      */
-    public void next() {
+    public void nextButtonIsPushed() {
 
         board.getMode().nextButtonIsPushed();
         board.getTurnInfo().setText(board.getMode().getStringForMode());
