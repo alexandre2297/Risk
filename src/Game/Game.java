@@ -1,5 +1,7 @@
 package Game;
 
+import IA.ClickSimulator;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +66,18 @@ public class Game implements Runnable {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setVisible(true);   
+        frame.setVisible(true);
+
+        frame.revalidate();
+
+        ClickSimulator clickSimulator = ClickSimulator.getInstance();
+        clickSimulator.setCountries(board.countries);
+
+        Point framePosition = new Point(frame.getX(),frame.getY()+30);
+        Point boardPosition = new Point(board.getX(),board.getY());
+        clickSimulator.setPosition(boardPosition,framePosition);
+        clickSimulator.clickOnCountry(board.countries[0]);
+
 
     }
 
