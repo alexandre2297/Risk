@@ -1,19 +1,19 @@
-//package IA;
+package IA;
 
 import Game.Board;
 import Game.Player;
 import java.util.ArrayList;
 
 /**
- * defines the state the game is in
- * usable for IAs
+ * Defines the state the game is in
+ * Usable for IAs
  */
 public class GameState {
 
     Board board;
 
-    ArrayList<Player> countryOwnerList;
-    ArrayList<Integer> countryArmyList;
+    private ArrayList<Player> countryOwnerList;
+    private ArrayList<Integer> countryArmyList;
 
     public GameState(Board board) {
         for (int i = 0; i != board.getCountries().length; i++) {

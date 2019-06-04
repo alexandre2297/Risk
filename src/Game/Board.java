@@ -178,7 +178,7 @@ public class Board extends JPanel{
         players = new Player[numPlayers];
         for (int i = 0; i < numPlayers; i++) {
             if (i == numPlayers - 1) {
-                players[i] = new IA();
+                players[i] = new IA(this);
             }
             else {
                 players[i] = new Player();
