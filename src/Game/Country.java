@@ -12,12 +12,13 @@ public class Country implements Comparable<Country> {
     Set<Country> adjacentCountries;
     private String name;
 
-    int numSoldiers;
+    public int numSoldiers;
     private int x;
     private int y;
     private int width;
     private int height;
     private boolean selected;
+    private Player owner = null;
 
     public Country (String name, int x, int y, int width, int height) {
         this.name = name;
@@ -27,7 +28,16 @@ public class Country implements Comparable<Country> {
         this.height = height;
         numSoldiers = 1;
     }
-    
+
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
     public String getName() {
         return name;
     }

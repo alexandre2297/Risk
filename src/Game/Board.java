@@ -126,10 +126,7 @@ public class Board extends JPanel{
     }
 
     public void setSelectedCountry(Country selectedCountry) {
-        System.out.println("changement de selected country:");
-        System.out.println("ancienne valeur:" + selectedCountry);
         this.selectedCountry = selectedCountry;
-        System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
     public Country getSelectedSecondCountry() {
@@ -137,10 +134,7 @@ public class Board extends JPanel{
     }
 
     public void setSelectedSecondCountry(Country selectedSecondCountry) {
-        System.out.println("changement de selected SECOND country:");
-        System.out.println("ancienne valeur:" + selectedCountry);
         this.selectedSecondCountry = selectedSecondCountry;
-        System.out.println("nouvelle valeur:" + selectedCountry);
     }
 
     public Player[] getPlayers() {
@@ -483,6 +477,7 @@ public class Board extends JPanel{
         Country[] shuffledCountries = shuffleCountries();
         for (int i = 0; i < countries.length; i++) {
             players[playerID].countriesOwned.add(shuffledCountries[i]);
+            shuffledCountries[i].setOwner(players[playerID]);
             playerID = (playerID + 1) % numPlayers;
         }
     }

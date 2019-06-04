@@ -220,13 +220,17 @@ public class Rules {
      */
     private void conquer() {
         Player enemy = null;
+        Country country = board.getSelectedSecondCountry();
         for (Player p : board.getPlayers()) {
-            if (p.countriesOwned.contains(board.getSelectedSecondCountry())) {
+            if (p.countriesOwned.contains(country)) {
                 enemy = p;
             }
         }
-        enemy.countriesOwned.remove(board.getSelectedSecondCountry());
-        board.getPlayers()[board.getTurn()].countriesOwned.add(board.getSelectedSecondCountry());
+        enemy.countriesOwned.remove(country);
+        Player player = board.getPlayers()[board.getTurn()];
+        player.countriesOwned.add(country);
+        country.setOwner(player);
+
 
         if (enemy.countriesOwned.isEmpty()) {
             enemy.dead = true;
