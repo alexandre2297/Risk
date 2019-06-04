@@ -12,12 +12,14 @@ public class IA extends Player {
     }
 
     /**
+     * Simulate a turn played by a player and return the new state of the game and the moveset to get there
      * @todo
-     * @param state
-     * @param strategy
-     * @return
+     * @param state input state to apply the simulation on
+     * @param strategy strategy used by the player
+     * @param player player that should play. NOTE that for a 2 players implementation, this field iàs null when this is the opponent's turn
+     * @return return the new state of the game and the moveset to get there
      */
-    public Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy) {
+    public Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy, Player player) {
         return null;
     }
 
@@ -27,19 +29,22 @@ public class IA extends Player {
     }
 
     /**
+     * Actually play the moveset recorded in the Move object by emulating the clicks on countries and buttons.
      * @todo
-     * @param move
+     * @param move move to play
      */
     private void playMove(Move move) {
 
     }
 
     /**
+     * apply a heuristic to a State object to determine how advantageous the situation is for a given player
      * @todo
-     * @param state
-     * @return
+     * @param state state the game is in
+     * @param player player for whom apply the heuristic // should be a Player variable but for a 2 player implementation its just whether we play or not
+     * @return heuristic calculated
      */
-    private int evaluateState(GameState state) {
+    private int evaluateState(GameState state, boolean player) {
         return 0;
     }
 
@@ -77,7 +82,7 @@ public class IA extends Player {
 
         // Terminating condition (max depth is reached)
         if (depth == maxDepth)
-            return new Pair<Integer, Move>(evaluateState(state), null);
+            return new Pair<Integer, Move>(evaluateState(state, maximizingPlayer), null);
 
         //later on we can change this with a "for each player: if player == ourPlayer : else: "
         if (maximizingPlayer) {
@@ -86,7 +91,7 @@ public class IA extends Player {
             Move bestMovePossible = null;
             // Recur for every strategy
             for (int i = 0; i < strategies.length; i++) {
-                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i]);
+                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], this);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1,false, alpha, beta, maxDepth);
                 int val = result.first;
                 best = Math.max(best, val);
@@ -108,7 +113,7 @@ public class IA extends Player {
 
             // Recur for every strategy
             for (int i = 0; i < strategies.length; i++) {
-                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i]);
+                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], null);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1,true, alpha, beta, maxDepth);
                 int val = result.first;
                 best = Math.min(best, val);
