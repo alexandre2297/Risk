@@ -1,7 +1,10 @@
 package IA;
 
 import Game.Board;
+import Game.Country;
 import Game.Player;
+
+import java.util.List;
 
 public class IA extends Player {
 
@@ -34,7 +37,52 @@ public class IA extends Player {
      * @param move move to play
      */
     private void playMove(Move move) {
+        playPlacements(move.placementList);
+        if(playAttacks(move.attackList)) {
+            board.getRules().nextButtonIsPushed();
+            playRenforcements(move.renforcementList);
+        }
+        board.getRules().nextButtonIsPushed();
+    }
 
+    private void playPlacements(List<Pair<Integer,Country>> placements) {
+        ClickSimulator clickRobot = ClickSimulator.getInstance();
+        for (Pair<Integer,Country> placement : placements) {
+            for(int i=0;i<placement.first;i++) {
+                clickRobot.clickOnCountry(placement.second);
+            }
+        }
+    }
+
+    private boolean playAttacks(List<Triple<Integer,Country,Country>> attacks) {
+        ClickSimulator clickRobot = ClickSimulator.getInstance();
+        for (Triple<Integer,Country,Country> attack : attacks) {
+            clickRobot.clickOnCountry(attack.second);
+            for(int i=0;i<attack.first;i++) {
+                clickRobot.clickOnCountry(attack.third);
+                if(attackIsToRisky(attack.second,attack.third)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean attackIsToRisky(Country owner, Country enemy) {
+        if(owner.numSoldiers / 3 > enemy.numSoldiers) {
+            return false;
+        }
+        return true;
+    }
+
+    private void playRenforcements(List<Triple<Integer,Country,Country>> renforcements) {
+        ClickSimulator clickRobot = ClickSimulator.getInstance();
+        for (Triple<Integer,Country,Country> renforcement : renforcements) {
+            clickRobot.clickOnCountry(renforcement.second);
+            for(int i=0;i<renforcement.first;i++) {
+                clickRobot.clickOnCountry(renforcement.third);
+            }
+        }
     }
 
     /**
