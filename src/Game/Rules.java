@@ -311,7 +311,7 @@ public class Rules {
      * This function is used by the Next button
      */
     public void nextButtonIsPushed() {
-
+        System.out.println("allo");
         board.getMode().nextButtonIsPushed();
         board.getTurnInfo().setText(board.getMode().getStringForMode());
         board.repaint();
