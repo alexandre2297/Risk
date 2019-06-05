@@ -447,13 +447,14 @@ public class Board extends JPanel{
 
         countries[41].adjacentCountries = new TreeSet<Country>();
 
-        for (int i = 0; i < countries.length; i++) {
-            for (Country c : countries[i].adjacentCountries) {
-                c.adjacentCountries.add(countries[i]);
+        for (Country c1 : countries) {
+            for (Country c2 : c1.adjacentCountries) {
+                c2.adjacentCountries.add(c1);
             }
         }
 
     }
+
 
     /* creates a shuffled array of countries
      */
@@ -468,6 +469,7 @@ public class Board extends JPanel{
         return shuffledCountries;
     }
 
+
     /* iterates through a shuffled array of countries to randomly
      * assign owners to countries
      * @param numPlayers the number of players
@@ -481,6 +483,7 @@ public class Board extends JPanel{
             playerID = (playerID + 1) % numPlayers;
         }
     }
+
 
     /* draws the connecting lines for countries that are adjacent
      * but not visibly so

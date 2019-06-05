@@ -75,25 +75,25 @@ public class Rules {
     /* return true if current player owns the continent, false otherwise
      * @param continent index for continent
      */
-    private boolean continentOwned(int continent) {
+    private boolean continentOwned(int continent, Player player) {
         for (Country c : board.getContinents().get(continent)) {
-            if (!board.getPlayers()[board.getTurn()].countriesOwned.contains(c)) {
+            if (!player.countriesOwned.contains(c)) {
                 return false;
             }
         }
         return true;
     }
 
-    /* calculates the number of troops a player can place at
-     * the beginning of his/her turn
+    /* calculate the number of troops a player can place at
+     * the beginning of their turn
      */
     private void updateTroopsToPlace() {
-
-        int countryBonus = board.getPlayers()[board.getTurn()].countriesOwned.size() / 3;
+        Player player = board.getPlayers()[board.getTurn()];
+        int countryBonus = player.countriesOwned.size() / 3;
         board.setTroopsToPlace(Math.max(3, countryBonus));
 
         for (int i = 0; i < board.getContinentBonuses().length; i++) {
-            if (continentOwned(i)) {
+            if (continentOwned(i, player)) {
                 board.setTroopsToPlace(board.getTroopsToPlace() + board.getContinentBonuses()[i]);
             }
         }
@@ -331,14 +331,15 @@ public class Rules {
 
 
         board.setMode(new PlacingMode (board));
+        int bonus = 0;
+        Player player = board.getPlayers()[board.getTurn()];
 
-        int bonus =0;
         for (int i = 0; i < board.getContinentBonuses().length; i++) {
-            if (continentOwned(i)) {
+            if (continentOwned(i, player)) {
                 bonus += board.getContinentBonuses()[i];
             }
         }
-        board.getBonusInfo().setText("Bonus : "+bonus);
+        board.getBonusInfo().setText("Bonus : " + bonus);
 
         updateTroopsToPlace();
 
