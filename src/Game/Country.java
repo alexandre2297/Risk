@@ -9,7 +9,7 @@ import java.util.Set;
  * to a country in the game
  */
 public class Country implements Comparable<Country> {
-    Set<Country> adjacentCountries;
+    public Set<Country> adjacentCountries;
     private String name;
 
     public int numSoldiers;

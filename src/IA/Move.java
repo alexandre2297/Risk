@@ -8,12 +8,12 @@ import java.util.List;
 public class Move {
     public List<Pair<Integer,Country>> placementList;
     public List<Triple<Integer,Country,Country>> attackList;
-    public List<Triple<Integer,Country,Country>> renforcementList;
+    public List<Triple<Integer,Country,Country>> reinforcementList;
 
     public Move() {
         placementList = new ArrayList<>();
         attackList = new ArrayList<>();
-        renforcementList = new ArrayList<>();
+        reinforcementList = new ArrayList<>();
     }
 
 }

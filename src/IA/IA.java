@@ -2,6 +2,10 @@ package IA;
 
 import Game.Board;
 import Game.Player;
+import IA.Behavior.AggressiveBehavior;
+import IA.Behavior.Behavior;
+import IA.Behavior.DefensiveBehavior;
+import IA.Behavior.NeutralBehavior;
 
 import java.util.Collections;
 
@@ -21,8 +25,25 @@ public class IA extends Player {
      * @param player player that should play. NOTE that for a 2 players implementation, this field iàs null when this is the opponent's turn
      * @return return the new state of the game and the moveset to get there
      */
-    public Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy, Player player) {
-        return null;
+    private Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy, Player player) {
+        Behavior behavior;
+        switch (strategy) {
+            case DEFENSIVE:
+                behavior = new DefensiveBehavior(state , player);
+                break;
+            case AGGRESSIVE:
+                behavior = new AggressiveBehavior(state , player);
+                break;
+            default:
+            case NEUTRAL:
+                behavior = new NeutralBehavior(state , player);
+                break;
+        }
+
+        behavior.placement();
+        behavior.attack();
+        behavior.reinforcement();
+        return behavior.getActions();
     }
 
     public void play() {
@@ -39,7 +60,7 @@ public class IA extends Player {
 
     }
 
-    private int getContinentBonuses(GameState state, Player player) {
+    public static int getContinentBonuses(GameState state, Player player) {
         int bonus = 0;
         bonus += getNorthAmericaBonus(state, player);
         bonus += getSouthAmericaBonus(state, player);
@@ -50,7 +71,7 @@ public class IA extends Player {
         return bonus;
     }
 
-    private int getNorthAmericaBonus(GameState state, Player player) {
+    private static int getNorthAmericaBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 0; i < 9; i++) {
             if (state.getCountryOwnerList().get(i) != player)
@@ -59,7 +80,7 @@ public class IA extends Player {
         return isContinentOwned ? 5 : 0;
     }
 
-    private int getSouthAmericaBonus(GameState state, Player player) {
+    private static int getSouthAmericaBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 9; i < 13; i++) {
             if (state.getCountryOwnerList().get(i) != player)
@@ -68,7 +89,7 @@ public class IA extends Player {
         return isContinentOwned ? 2 : 0;
     }
 
-    private int getEuropeBonus(GameState state, Player player) {
+    private static int getEuropeBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 13; i < 20; i++) {
             if (state.getCountryOwnerList().get(i) != player)
@@ -77,7 +98,7 @@ public class IA extends Player {
         return isContinentOwned ? 5 : 0;
     }
 
-    private int getAfricaBonus(GameState state, Player player) {
+    private static int getAfricaBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 20; i < 26; i++) {
             if (state.getCountryOwnerList().get(i) != player)
@@ -86,7 +107,7 @@ public class IA extends Player {
         return isContinentOwned ? 3 : 0;
     }
 
-    private int getAsiaBonus(GameState state, Player player) {
+    private static int getAsiaBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 26; i < 38; i++) {
             if (state.getCountryOwnerList().get(i) != player)
@@ -95,13 +116,17 @@ public class IA extends Player {
         return isContinentOwned ? 7 : 0;
     }
 
-    private int getAustraliaBonus(GameState state, Player player) {
+    private static int getAustraliaBonus(GameState state, Player player) {
         boolean isContinentOwned = true;
         for (int i = 38; i < 42; i++) {
             if (state.getCountryOwnerList().get(i) != player)
                 isContinentOwned = false;
         }
         return isContinentOwned ? 2 : 0;
+    }
+
+    public static int getNbCountries(GameState state, Player player) {
+        return Collections.frequency(state.getCountryOwnerList(), player);
     }
 
     /**
@@ -112,7 +137,7 @@ public class IA extends Player {
      * @return heuristic calculated
      */
     private int evaluateState(GameState state, Player player) {
-        int myCountries = Collections.frequency(state.getCountryOwnerList(), player);
+        int myCountries = getNbCountries(state, player);
         double myCountryBonus = Math.max((double) myCountries / 3, 3.0);
         double theirCountryBonus = Math.max((double) (state.getCountryOwnerList().size() - myCountries) / 3, 3.0);
 
@@ -176,7 +201,6 @@ public class IA extends Player {
             return new Pair<Integer, Move>(evaluateState(state, player), null);
 
         int nextPlayerIndex = playerIndex + 1 % board.getPlayers().length;
-        //later on we can change this with a "for each player: if player == ourPlayer : else: "
         if (player == this) {
             int best = Integer.MIN_VALUE;
 
