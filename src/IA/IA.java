@@ -1,11 +1,9 @@
 package IA;
 
 import Game.Board;
-import Game.Country;
 import Game.Player;
 
 import java.util.Collections;
-import java.util.Set;
 
 public class IA extends Player {
 
@@ -148,7 +146,7 @@ public class IA extends Player {
      * @return best heuristic found
      */
     private Move minimax(GameState state, int maxDepth) {
-        int index;
+        int index = 0;
         for (int i = 0; i != board.getPlayers().length; i++) {
             if (board.getPlayers()[i] == this)
                 index = i;
