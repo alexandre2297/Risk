@@ -3,6 +3,7 @@ package Game;
 import Modes.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -151,11 +152,15 @@ public class Rules {
      */
     private void attack(Country own, Country enemy) {
 
-        int numberDiceAtck = Math.min(3, own.numSoldiers - 1);
-        int numberDiceDef = Math.min(2, enemy.numSoldiers);
+        Integer[] atkDice = new Integer[3];
+        Integer[] defDice = new Integer[2];
+        Arrays.fill(atkDice,0);
+        Arrays.fill(defDice,0);
+        
+        int numberDiceAtck = Math.min(atkDice.length, own.numSoldiers - 1);
+        int numberDiceDef = Math.min(defDice.length, enemy.numSoldiers);
 
-        Integer[] atkDice = new Integer[numberDiceAtck];
-        Integer[] defDice = new Integer[numberDiceDef];
+
 
         for (int i = 0; i < numberDiceAtck; i++) {
             atkDice[i] = roll();
@@ -167,7 +172,7 @@ public class Rules {
 
         Arrays.sort(atkDice,Collections.reverseOrder());
         Arrays.sort(defDice,Collections.reverseOrder());
-        
+
         if (atkDice[0] > defDice[0]) {
             enemy.numSoldiers--;
         } else {
@@ -180,13 +185,13 @@ public class Rules {
                 own.numSoldiers--;
             }
         }
-
-        board.getDiceInfo().dice[0].update(atkDice[0]);
-        board.getDiceInfo().dice[1].update(defDice[0]);
-        board.getDiceInfo().dice[2].update(atkDice[1]);
-        board.getDiceInfo().dice[3].update(defDice[1]);
-        board.getDiceInfo().dice[4].update(atkDice[2]);
-        board.getDiceInfo().repaint();
+        Dice boardDice = board.getDiceInfo();
+        boardDice.dice[0].update(atkDice[0]);
+        boardDice.dice[1].update(defDice[0]);
+        boardDice.dice[2].update(atkDice[1]);
+        boardDice.dice[3].update(defDice[1]);
+        boardDice.dice[4].update(atkDice[2]);
+        boardDice.repaint();
     }
 
     /* checks the number of available soldiers to see if a battle is over
