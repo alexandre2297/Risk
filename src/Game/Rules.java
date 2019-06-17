@@ -4,6 +4,7 @@ import Modes.*;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Rules {
 
@@ -149,20 +150,24 @@ public class Rules {
      * @param enemy for the defending country
      */
     private void attack(Country own, Country enemy) {
-        int[] atkDice = new int[3];
-        int[] defDice = new int[2];
 
-        for (int i = 0; i < Math.min(atkDice.length, own.numSoldiers - 1); i++) {
+        int numberDiceAtck = Math.min(3, own.numSoldiers - 1);
+        int numberDiceDef = Math.min(2, enemy.numSoldiers);
+
+        Integer[] atkDice = new Integer[numberDiceAtck];
+        Integer[] defDice = new Integer[numberDiceDef];
+
+        for (int i = 0; i < numberDiceAtck; i++) {
             atkDice[i] = roll();
         }
 
-        for (int i = 0; i < Math.min(defDice.length, enemy.numSoldiers); i++) {
+        for (int i = 0; i <numberDiceDef; i++) {
             defDice[i] = roll();
         }
 
-        Arrays.sort(atkDice);
-        Arrays.sort(defDice);
-
+        Arrays.sort(atkDice,Collections.reverseOrder());
+        Arrays.sort(defDice,Collections.reverseOrder());
+        
         if (atkDice[0] > defDice[0]) {
             enemy.numSoldiers--;
         } else {
