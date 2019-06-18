@@ -1,5 +1,6 @@
 package Game;
 
+import IA.IA;
 import Modes.*;
 
 import java.awt.*;
@@ -52,6 +53,13 @@ public class Rules {
 
         if (board.getMode() instanceof InitialPlacingMode){
             board.setTurn(board.getTurn() + 1);
+
+            /*Player p = board.getPlayers()[board.getTurn()];
+            if(p instanceof IA) {
+                System.out.println("ia");
+                ((IA) p).play();
+            }*/
+
             if (board.getTurn() == board.getPlayers().length) {
                 board.setTurn(0);
                 updateTroopsToPlace();
@@ -61,6 +69,7 @@ public class Rules {
             initialTroopsToPlace();
             return;
         }
+
 
         board.setMode(board.getMode().nextMode());
     }
@@ -156,11 +165,9 @@ public class Rules {
         Integer[] defDice = new Integer[2];
         Arrays.fill(atkDice,0);
         Arrays.fill(defDice,0);
-        
+
         int numberDiceAtck = Math.min(atkDice.length, own.numSoldiers - 1);
         int numberDiceDef = Math.min(defDice.length, enemy.numSoldiers);
-
-
 
         for (int i = 0; i < numberDiceAtck; i++) {
             atkDice[i] = roll();

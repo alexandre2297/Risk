@@ -1,6 +1,8 @@
 package Modes;
 
 import Game.Board;
+import Game.Player;
+import IA.IA;
 
 import java.awt.*;
 
@@ -30,7 +32,6 @@ public class InitialPlacingMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-
         board.getRules().placeSoldier(mouse, isRightClick);
         System.out.println("Initial Placing Mode for player" + (board.getTurn() + 1));
     }

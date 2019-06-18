@@ -19,7 +19,10 @@ public class GameState {
     private ArrayList<Integer> countryArmyList;
 
     public GameState(Board board) {
-        for (int i = 0; i != board.getCountries().length; i++) {
+        countryList = getCountryList();
+        countryOwnerList = getCountryOwnerList();
+        countryArmyList = getCountryArmyList();
+        for (int i = 0; i < board.getCountries().length; i++) {
             countryList.add(board.getCountries()[i]);
             countryOwnerList.add(board.getCountries()[i].getOwner());
             countryArmyList.add(board.getCountries()[i].numSoldiers);

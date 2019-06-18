@@ -46,7 +46,7 @@ public class Board extends JPanel{
     private final Dice diceInfo;
     private Player[] players;
 
-    private Mode mode = new InitialPlacingMode(this);
+    private Mode mode;
 
     public Mode getMode() {
         return mode;
@@ -157,6 +157,8 @@ public class Board extends JPanel{
         initializeContinents();
         initializePlayers(numPlayers);
         initialCountryOwners(numPlayers);
+
+        this.mode = new InitialPlacingMode(this);
         rules.initialTroopsToPlace();
 
         turnInfo.setText(mode.getStringForMode());
@@ -172,6 +174,8 @@ public class Board extends JPanel{
             }
 
         });
+
+
     }
 
     private void initializePlayers(int numPlayers) {

@@ -50,7 +50,7 @@ public class IA extends Player {
 
     public void play() {
         Move moveToPlay = minimax(new GameState(board), 10);
-        playMove(moveToPlay);
+        //playMove(moveToPlay);
     }
 
     /**
@@ -62,7 +62,7 @@ public class IA extends Player {
         playPlacements(move.placementList);
         if(playAttacks(move.attackList)) {
             board.getRules().nextButtonIsPushed();
-            playRenforcements(move.renforcementList);
+            playRenforcements(move.reinforcementList);
         }
         board.getRules().nextButtonIsPushed();
     }
