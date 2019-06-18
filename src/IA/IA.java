@@ -62,7 +62,7 @@ public class IA extends Player {
         playPlacements(move.placementList);
         if(playAttacks(move.attackList)) {
             board.getRules().nextButtonIsPushed();
-            playRenforcements(move.renforcementList);
+            playRenforcements(move.reinforcementList);
         }
         board.getRules().nextButtonIsPushed();
     }
@@ -91,18 +91,15 @@ public class IA extends Player {
     }
 
     private boolean attackIsToRisky(Country owner, Country enemy) {
-        if(owner.numSoldiers / 3 > enemy.numSoldiers) {
-            return false;
-        }
-        return true;
+        return ! (owner.numSoldiers / 3 > enemy.numSoldiers);
     }
 
-    private void playRenforcements(List<Triple<Integer,Country,Country>> renforcements) {
+    private void playRenforcements(List<Triple<Integer, Country,Country>> reinforcements) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
-        for (Triple<Integer,Country,Country> renforcement : renforcements) {
-            clickRobot.clickOnCountry(renforcement.second);
-            for(int i=0;i<renforcement.first;i++) {
-                clickRobot.clickOnCountry(renforcement.third);
+        for (Triple<Integer, Country, Country> reinforcement : reinforcements) {
+            clickRobot.clickOnCountry(reinforcement.second);
+            for (int i=0; i<reinforcement.first; i++) {
+                clickRobot.clickOnCountry(reinforcement.third);
             }
         }
     }

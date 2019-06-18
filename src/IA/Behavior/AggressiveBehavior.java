@@ -27,11 +27,14 @@ public class AggressiveBehavior implements Behavior {
     }
 
     /**
-     * PLace les unités sur tous les pays mitoyens avec un pays ennemi ayant un nombre de soldats elevé
+     * Place les unités sur tous les pays mitoyens avec un pays ennemi ayant un nombre de soldats elevé
+     *
+     * @todo warning: sorting pairs is fucking twisting
      */
     public void placement() {
         int troopsToPlace = getPlacementTroops();
 
+        //get bordering countries and corresponding armies
         ArrayList<Pair> borderingArmies = new ArrayList<>();
         for (Country country1 : inputState.getCountryList()) {
             if (country1.getOwner() == player) {
@@ -45,6 +48,7 @@ public class AggressiveBehavior implements Behavior {
             }
         }
 
+        // put troops next to the countries that have the biggest armies
         Collections.sort(borderingArmies, Collections.reverseOrder());
         for (Pair<Integer, Country> pair : borderingArmies) {
             int countryIndex = inputState.getCountryList().indexOf(pair.second);
@@ -62,6 +66,7 @@ public class AggressiveBehavior implements Behavior {
             }
         }
 
+        //put remaining troops to a pseudorandom country
         if (troopsToPlace > 0) {
             int countryIndex = inputState.getCountryList().indexOf(borderingArmies.get(0).second);
             int currentArmy = (Integer) outputState.getCountryArmyList().get(countryIndex);
