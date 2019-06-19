@@ -39,6 +39,7 @@ public class ClickSimulator {
 
     public void clickOnCountry(Country c) {
         bot.mouseMove(boardPosition.x+windowPosition.x+c.getX()+1,boardPosition.y+windowPosition.y+c.getY()+1);
-        bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        bot.mousePress(InputEvent.BUTTON1_MASK);
+        bot.mouseRelease(InputEvent.BUTTON1_MASK);
     }
 }

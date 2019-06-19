@@ -12,10 +12,6 @@ public class PlacingMode implements Mode {
 
     public PlacingMode(Board board) {
         this.board = board;
-        Player p = board.getPlayers()[board.getTurn()];
-        if(p instanceof IA) {
-            ((IA) p).play();
-        }
     }
 
     @Override

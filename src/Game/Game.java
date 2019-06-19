@@ -76,8 +76,6 @@ public class Game implements Runnable {
         Point framePosition = new Point(frame.getX(),frame.getY()+30);
         Point boardPosition = new Point(board.getX(),board.getY());
         clickSimulator.setPosition(boardPosition,framePosition);
-        clickSimulator.clickOnCountry(board.countries[0]);
-
 
     }
 
