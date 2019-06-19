@@ -6,8 +6,6 @@ import IA.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class AggressiveBehavior implements Behavior {
 
@@ -51,6 +49,8 @@ public class AggressiveBehavior implements Behavior {
         // put troops next to the countries that have the biggest armies
         Collections.sort(borderingArmies, Collections.reverseOrder());
         for (Pair<Integer, Country> pair : borderingArmies) {
+            if (troopsToPlace <= 0)
+                break;
             int countryIndex = inputState.getCountryList().indexOf(pair.second);
             int currentArmy = (Integer) outputState.getCountryArmyList().get(countryIndex);
             if (currentArmy < pair.first) {

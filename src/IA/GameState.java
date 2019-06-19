@@ -41,11 +41,11 @@ public class GameState {
         return countryList;
     }
 
-    public ArrayList getCountryOwnerList() {
+    public ArrayList<Player> getCountryOwnerList() {
         return countryOwnerList;
     }
 
-    public ArrayList getCountryArmyList() {
+    public ArrayList<Integer> getCountryArmyList() {
         return countryArmyList;
     }
 
