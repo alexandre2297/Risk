@@ -348,6 +348,7 @@ public class Rules {
 
 
         board.setMode(new PlacingMode (board));
+
         int bonus = 0;
         Player player = board.getPlayers()[board.getTurn()];
 
@@ -359,6 +360,10 @@ public class Rules {
         board.getBonusInfo().setText("Bonus : " + bonus);
 
         updateTroopsToPlace();
+
+        if(player instanceof IA) {
+            ((IA) player).play();
+        }
 
 
     }

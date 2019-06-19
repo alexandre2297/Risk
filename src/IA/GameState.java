@@ -19,9 +19,10 @@ public class GameState {
     private ArrayList<Integer> countryArmyList;
 
     public GameState(Board board) {
-        countryList = getCountryList();
-        countryOwnerList = getCountryOwnerList();
-        countryArmyList = getCountryArmyList();
+        this.board = board;
+        countryList = new ArrayList<>();
+        countryOwnerList = new ArrayList<>();
+        countryArmyList = new ArrayList<>();
         for (int i = 0; i < board.getCountries().length; i++) {
             countryList.add(board.getCountries()[i]);
             countryOwnerList.add(board.getCountries()[i].getOwner());
@@ -32,8 +33,8 @@ public class GameState {
     public GameState(GameState state) {
         board = state.board;
         countryList = state.getCountryList();
-        countryOwnerList = getCountryOwnerList();
-        countryArmyList = getCountryArmyList();
+        countryOwnerList = state.getCountryOwnerList();
+        countryArmyList = state.getCountryArmyList();
 
     }
 
