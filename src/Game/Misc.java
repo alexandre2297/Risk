@@ -1,9 +1,8 @@
-package IA.Behavior;
+package Game;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static java.util.concurrent.ThreadLocalRandom;
 import static java.util.concurrent.ThreadLocalRandom.current;
 
 public class Misc {

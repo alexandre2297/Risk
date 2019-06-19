@@ -2,6 +2,7 @@ package IA;
 
 import Game.Board;
 import Game.Country;
+import Game.Misc;
 import Game.Player;
 import IA.Behavior.*;
 
