@@ -2,11 +2,9 @@ package IA;
 
 import Game.Board;
 import Game.Country;
+import Game.Misc;
 import Game.Player;
-import IA.Behavior.AggressiveBehavior;
-import IA.Behavior.Behavior;
-import IA.Behavior.DefensiveBehavior;
-import IA.Behavior.NeutralBehavior;
+import IA.Behavior.*;
 
 import java.util.List;
 import java.util.Collections;
@@ -29,12 +27,13 @@ public class IA extends Player {
      */
     private Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy, Player player) {
         Behavior behavior;
+        int randomizer = Misc.RandomInt(1, 4);
         switch (strategy) {
             case DEFENSIVE:
                 behavior = new DefensiveBehavior(state , player);
                 break;
             case AGGRESSIVE:
-                behavior = new AggressiveBehavior(state , player);
+                behavior = new AggressiveBehavior(state , player, randomizer);
                 break;
             default:
             case NEUTRAL:

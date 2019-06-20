@@ -204,36 +204,42 @@ public class Board extends JPanel{
         Set<Country> thisContinent = continents.get(0);
         for (int i = 0; i < 9; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
 
         // South America
         thisContinent = continents.get(1);
         for (int i = 9; i < 13; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
 
         // Europe
         thisContinent = continents.get(2);
         for (int i = 13; i < 20; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
 
         // Africa
         thisContinent = continents.get(3);
         for (int i = 20; i < 26; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
 
         // Asia
         thisContinent = continents.get(4);
         for (int i = 26; i < 38; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
 
         // Australia
         thisContinent = continents.get(5);
         for (int i = 38; i < 42; i++) {
             thisContinent.add(countries[i]);
+            countries[i].setContinent(thisContinent);
         }
     }
 

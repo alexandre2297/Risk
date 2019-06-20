@@ -19,6 +19,7 @@ public class Country implements Comparable<Country> {
     private int height;
     private boolean selected;
     private Player owner = null;
+    private Set<Country> continent;
 
     public Country (String name, int x, int y, int width, int height) {
         this.name = name;
@@ -29,6 +30,13 @@ public class Country implements Comparable<Country> {
         numSoldiers = 1;
     }
 
+    public Set<Country> getContinent() {
+        return continent;
+    }
+
+    public void setContinent(Set<Country> continent) {
+        this.continent = continent;
+    }
 
     public Player getOwner() {
         return owner;
