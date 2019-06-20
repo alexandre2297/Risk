@@ -58,12 +58,12 @@ public class IA extends Player {
      * @param move move to play
      */
     private void playMove(Move move) {
+        ClickSimulator clickRobot = ClickSimulator.getInstance();
         playPlacements(move.placementList);
-        if(playAttacks(move.attackList)) {
-            board.getRules().nextButtonIsPushed();
-            playRenforcements(move.reinforcementList);
-        }
-        board.getRules().nextButtonIsPushed();
+        playAttacks(move.attackList);
+        clickRobot.clickOnNext();
+        playRenforcements(move.reinforcementList);
+        clickRobot.clickOnNext();
     }
 
     private void playPlacements(List<Pair<Integer,Country>> placements) {
@@ -75,18 +75,21 @@ public class IA extends Player {
         }
     }
 
-    private boolean playAttacks(List<Triple<Integer,Country,Country>> attacks) {
+    private void playAttacks(List<Triple<Integer,Country,Country>> attacks) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
         for (Triple<Integer,Country,Country> attack : attacks) {
-            clickRobot.clickOnCountry(attack.second);
+            Country fromAtck = attack.second;
+            Country toAtck = attack.third;
+            clickRobot.clickOnCountry(fromAtck);
             for(int i=0;i<attack.first;i++) {
-                clickRobot.clickOnCountry(attack.third);
-                if(attackIsToRisky(attack.second,attack.third)) {
-                    return true;
+                if(toAtck.getOwner() == this) {
+                    break;
+                } else if(attackIsToRisky(fromAtck,toAtck)) {
+                    return;
                 }
+                clickRobot.clickOnCountry(attack.third);
             }
         }
-        return false;
     }
 
     private boolean attackIsToRisky(Country owner, Country enemy) {
