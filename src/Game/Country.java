@@ -38,6 +38,10 @@ public class Country implements Comparable<Country> {
         this.continent = continent;
     }
 
+    public Set<Country> getAdjacentCountries() {
+        return adjacentCountries;
+    }
+
     public Player getOwner() {
         return owner;
     }
