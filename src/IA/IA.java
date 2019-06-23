@@ -6,8 +6,10 @@ import Game.Misc;
 import Game.Player;
 import IA.Behavior.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+import java.util.Set;
 
 public class IA extends Player {
 
@@ -52,6 +54,101 @@ public class IA extends Player {
         //playMove(moveToPlay);
     }
 
+    public void playInitialPlacement() {
+        Move moveToPlayPlacements = new Move();
+        moveToPlayPlacements.placementList.addAll(AnalysePlacementsForContinents());
+        if(board.getTroopsToPlace() > 0) {
+            moveToPlayPlacements.placementList.add(new Pair<Integer, Country>(board.getTroopsToPlace()-1,searchCountryByMaxProximityEnnemies(this)));
+        }
+        playMove(moveToPlayPlacements);
+    }
+
+    public ArrayList<Pair<Integer,Country>> AnalysePlacementsForContinents() {
+
+        List<Set<Country>> continents = board.getContinents();
+        ArrayList<Pair<Integer,Country>> placements= new ArrayList<Pair<Integer, Country>>();
+        int troupesRestantes = board.getTroopsToPlace();
+        for (Set<Country> continent : continents) {
+            if(troupesRestantes==0) {
+                break;
+            }
+            List<Country> notOwned = new ArrayList<Country>();
+            for (Country country : continent) {
+                if(country.getOwner() != this) {
+                    notOwned.add(country);
+                }
+            }
+            if(notOwned.size() < continent.size()/2 && notOwned.size()!=0) {
+                for (Country c: notOwned) {
+                    if(troupesRestantes!=0) {
+                        Country aimCountry = searchProximityCountry(c,this);
+                        if(aimCountry != null && aimCountry.numSoldiers==1) {
+                            int nbSoldier = Math.min(troupesRestantes, 2 + getProximityArmy(aimCountry,this));
+                            placements.add(new Pair<Integer, Country>(nbSoldier, aimCountry));
+                            troupesRestantes -= nbSoldier;
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return placements;
+    }
+
+    private Country searchProximityCountry(Country country,Player p) {
+       Country research = null;
+       int maxEnemmies = 0;
+       for (Country c : country.getAdjacentCountries()) {
+           if(c.getOwner() == p ) {
+               int countAdjacentEnemies = countProximityEnnemies(c,p);
+               if(countAdjacentEnemies> maxEnemmies) {
+                   maxEnemmies = countAdjacentEnemies;
+                   research = c;
+               }
+
+           }
+       }
+       return research;
+    }
+
+    private Country searchCountryByMaxProximityEnnemies(Player p) {
+        Country research = null;
+        int maxEnnemies = 0;
+        Country[] allCountries = board.getCountries();
+        for (Country c : allCountries) {
+            if(c.numSoldiers==1 && c.getOwner() == p) {
+                int ennemies = countProximityEnnemies(c, p);
+                if (ennemies > maxEnnemies) {
+                    maxEnnemies = ennemies;
+                    research = c;
+                }
+            }
+        }
+        return research;
+    }
+
+    private int countProximityEnnemies(Country c,Player p) {
+        int countAdjacentEnemies = 0;
+        for(Country proximity : c.getAdjacentCountries()) {
+            if(proximity.getOwner() !=p) {
+                countAdjacentEnemies+=1;
+            }
+        }
+        return countAdjacentEnemies;
+    }
+
+    private int getProximityArmy(Country country,Player p) {
+        int cumulSoldier = 0;
+        for (Country c : country.getAdjacentCountries()) {
+            if(c.getOwner() != p) {
+                cumulSoldier += c.numSoldiers;
+            }
+        }
+        return cumulSoldier;
+    }
+
     /**
      * Actually play the moveset recorded in the Move object by emulating the clicks on countries and buttons.
      * @todo
@@ -81,19 +178,27 @@ public class IA extends Player {
             Country fromAtck = attack.second;
             Country toAtck = attack.third;
             clickRobot.clickOnCountry(fromAtck);
+            boolean attackOK = false;
             for(int i=0;i<attack.first;i++) {
-                if(toAtck.getOwner() == this) {
-                    break;
-                } else if(attackIsToRisky(fromAtck,toAtck)) {
+                if(attackIsToRisky(fromAtck,toAtck)) {
                     return;
                 }
-                clickRobot.clickOnCountry(attack.third);
+                clickRobot.clickOnCountry(toAtck);
+                if(toAtck.getOwner() == this) {
+                    attackOK = true;
+                    break;
+                }
+            }
+            if(!attackOK) {
+                while (!attackIsToRisky(fromAtck,toAtck)) {
+                    clickRobot.clickOnCountry(toAtck);
+                }
             }
         }
     }
 
     private boolean attackIsToRisky(Country owner, Country enemy) {
-        return ! (owner.numSoldiers / 3 > enemy.numSoldiers);
+        return ! (owner.numSoldiers +5 > enemy.numSoldiers);
     }
 
     private void playRenforcements(List<Triple<Integer, Country,Country>> reinforcements) {

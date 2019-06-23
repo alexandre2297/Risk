@@ -54,12 +54,6 @@ public class Rules {
         if (board.getMode() instanceof InitialPlacingMode){
             board.setTurn(board.getTurn() + 1);
 
-            /*Player p = board.getPlayers()[board.getTurn()];
-            if(p instanceof IA) {
-                System.out.println("ia");
-                ((IA) p).play();
-            }*/
-
             if (board.getTurn() == board.getPlayers().length) {
                 board.setTurn(0);
                 updateTroopsToPlace();
@@ -67,6 +61,11 @@ public class Rules {
                 return;
             }
             initialTroopsToPlace();
+            Player p = board.getPlayers()[board.getTurn()];
+            if(p instanceof IA) {
+                ((IA) p).playInitialPlacement();
+
+            }
             return;
         }
 
