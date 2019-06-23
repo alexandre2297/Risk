@@ -58,7 +58,7 @@ public class IA extends Player {
         Move moveToPlayPlacements = new Move();
         moveToPlayPlacements.placementList.addAll(AnalysePlacementsForContinents());
         if(board.getTroopsToPlace() > 0) {
-            moveToPlayPlacements.placementList.add(new Pair<Integer, Country>(board.getTroopsToPlace()-1,searchCountryByMaxProximityEnnemies(this)));
+            moveToPlayPlacements.placementList.add(new Pair<Integer, Country>(board.getTroopsToPlace()-1, searchCountryByMaxProximityEnemies(this)));
         }
         playMove(moveToPlayPlacements);
     }
@@ -84,7 +84,7 @@ public class IA extends Player {
                         Country aimCountry = searchProximityCountry(c,this);
                         if(aimCountry != null && aimCountry.numSoldiers==1) {
                             int nbSoldier = Math.min(troupesRestantes, 2 + getProximityArmy(aimCountry,this));
-                            placements.add(new Pair<Integer, Country>(nbSoldier, aimCountry));
+                            placements.add(new Pair<>(nbSoldier, aimCountry));
                             troupesRestantes -= nbSoldier;
                             break;
                         }
@@ -99,12 +99,12 @@ public class IA extends Player {
 
     private Country searchProximityCountry(Country country,Player p) {
        Country research = null;
-       int maxEnemmies = 0;
+       int maxEnemies = 0;
        for (Country c : country.getAdjacentCountries()) {
            if(c.getOwner() == p ) {
-               int countAdjacentEnemies = countProximityEnnemies(c,p);
-               if(countAdjacentEnemies> maxEnemmies) {
-                   maxEnemmies = countAdjacentEnemies;
+               int countAdjacentEnemies = countProximityEnemies(c,p);
+               if(countAdjacentEnemies> maxEnemies) {
+                   maxEnemies = countAdjacentEnemies;
                    research = c;
                }
 
@@ -113,15 +113,15 @@ public class IA extends Player {
        return research;
     }
 
-    private Country searchCountryByMaxProximityEnnemies(Player p) {
+    private Country searchCountryByMaxProximityEnemies(Player p) {
         Country research = null;
-        int maxEnnemies = 0;
+        int maxEnemies = 0;
         Country[] allCountries = board.getCountries();
         for (Country c : allCountries) {
             if(c.numSoldiers==1 && c.getOwner() == p) {
-                int ennemies = countProximityEnnemies(c, p);
-                if (ennemies > maxEnnemies) {
-                    maxEnnemies = ennemies;
+                int enemies = countProximityEnemies(c, p);
+                if (enemies > maxEnemies) {
+                    maxEnemies = enemies;
                     research = c;
                 }
             }
@@ -129,7 +129,7 @@ public class IA extends Player {
         return research;
     }
 
-    private int countProximityEnnemies(Country c,Player p) {
+    private int countProximityEnemies(Country c, Player p) {
         int countAdjacentEnemies = 0;
         for(Country proximity : c.getAdjacentCountries()) {
             if(proximity.getOwner() !=p) {
