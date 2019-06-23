@@ -7,6 +7,8 @@ import static java.util.concurrent.ThreadLocalRandom.current;
 
 public class Misc {
 
+    public static double threeVTwo = 0.7453703703703703;
+
     /* Function to remove duplicates from an ArrayList
      */
     public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list)

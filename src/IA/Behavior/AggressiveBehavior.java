@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+
 public class AggressiveBehavior implements Behavior {
 
     //@TODO we need to create deep copies of GameState and Countries at least
@@ -108,54 +109,20 @@ public class AggressiveBehavior implements Behavior {
         }
 
         //attack weak countries
+        //attack the weakest country found, and recursively iterate to update the lest of countries attackeable
         ArrayList<Triple<Country, Country, Integer>> attackeableCountries = getAdjacentEnemyCountries(weakCountriesThreshold);
-        for (Triple<Country, Country, Integer> countryTriple : attackeableCountries)
+        for (Triple<Country, Country, Integer> countryTriple : attackeableCountries) {
             takeCountry(countryTriple.first, countryTriple.second);
-
-
+            attack();
+            break;
+        }
     }
 
 
     /**
-     * Place les unités sur tous les pays mitoyens avec un pays ennemi ayant un nombre de soldats elevé
-     *
-     * @todo warning: sorting pairs is fucking twisting
-     * @todo EVERYTHINF IS HJUST COPIED FROM PLACEMENT AND NEEDS TO BE ADJUSTED en renforcant un pays avec un autre
+     * @todo everything
      */
-    public void reinforcement() {
-        int troopsToPlace = getPlacementTroops();
-        ArrayList<Pair<Integer, Country>> borderingArmies = getNotSafeCountries();
-
-
-        // put troops next to the countries that have the biggest armies
-            for (Pair<Integer, Country> pair : borderingArmies) {
-            if (troopsToPlace <= 0)
-                break;
-            int countryIndex = inputState.getCountryList().indexOf(pair.second);
-            int currentArmy = outputState.getCountryArmyList().get(countryIndex);
-            if (currentArmy < pair.first) {
-                if (troopsToPlace < pair.first) {
-                    outputState.setCountryArmyVal(countryIndex, currentArmy + pair.first);
-                    troopsToPlace -= pair.first;
-                    move.placementList.add(new Pair<>(pair.first, pair.second));
-                } else {
-                    outputState.setCountryArmyVal(countryIndex, currentArmy + troopsToPlace);
-                    move.placementList.add(new Pair<>(troopsToPlace, pair.second));
-                    troopsToPlace = 0;
-                }
-            }
-        }
-    }
-
-    //put remaining troops to a pseudorandom country
-        if (troopsToPlace > 0) {
-        int countryIndex = inputState.getCountryList().indexOf(borderingArmies.get(0).second);
-        int currentArmy = outputState.getCountryArmyList().get(countryIndex);
-        outputState.setCountryArmyVal(countryIndex, currentArmy + troopsToPlace);
-        move.placementList.add(new Pair<>(troopsToPlace, borderingArmies.get(0).second));
-        troopsToPlace = 0;
-    }
-}
+    public void reinforcement() {}
 
 
     public Pair<GameState, Move> getActions() {return null;}
@@ -197,9 +164,39 @@ public class AggressiveBehavior implements Behavior {
         return true;
     }
 
-    private void takeCountry(Country countryFrom, Country countryTo) {
-        if (countryFrom.numSoldiers <= weakCountriesThreshold)
-            return;
+    private int getTotalAdjacentEnnemyArmies(Country country) {
+        int adjacentArmies = 0;
+        for (Country country2 : country.adjacentCountries) {
+            if (country2.getOwner() != player)
+                adjacentArmies += outputState.getCountryArmyList().get(outputState.getCountryList().indexOf(country2));
+        }
+        return adjacentArmies;
+    }
 
+    private void takeCountry(Country countryFrom, Country countryTo) {
+        if (countryFrom.numSoldiers <= weakCountriesThreshold) { // base case
+            //estimates the average number of troops lost to take a country
+            int approximateLoss = (int) Math.ceil(countryTo.numSoldiers / Misc.threeVTwo);
+            if (approximateLoss <= countryFrom.numSoldiers) {
+                countryFrom.numSoldiers -= approximateLoss;
+                countryTo.setOwner(player);
+                outputState.setCountryOwnerVal(outputState.getCountryList().indexOf(countryTo), player);
+                replaceTroops(countryFrom, countryTo, approximateLoss);
+            }
+        }
+
+    }
+
+    private void replaceTroops(Country countryFrom, Country countryTo, int approximateLoss) {
+        if (countryFrom.numSoldiers - 1 > getTotalAdjacentEnnemyArmies(countryTo)) {
+            move.attackList.add(new Triple<>(countryFrom, countryTo, countryTo));
+            countryFrom.numSoldiers = 1;
+            countryTo.numSoldiers = approximateLoss - 1;
+        }
+        else {
+            move.attackList.add(new Triple<>(countryFrom, countryTo, countryFrom));
+            countryTo.numSoldiers = 1;
+            countryFrom.numSoldiers = approximateLoss - 1;
+        }
     }
 }
