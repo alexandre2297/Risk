@@ -172,27 +172,29 @@ public class IA extends Player {
         }
     }
 
-    private void playAttacks(List<Triple<Integer,Country,Country>> attacks) {
+    private void playAttacks(List<Triple<Country,Country,Country>> attacks) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
-        for (Triple<Integer,Country,Country> attack : attacks) {
-            Country fromAtck = attack.second;
-            Country toAtck = attack.third;
+        for (Triple<Country,Country,Country> attack : attacks) {
+            Country fromAtck = attack.first;
+            Country toAtck = attack.second;
+            Country toPlace =attack.third;
             clickRobot.clickOnCountry(fromAtck);
-            boolean attackOK = false;
-            for(int i=0;i<attack.first;i++) {
-                if(attackIsToRisky(fromAtck,toAtck)) {
-                    return;
-                }
-                clickRobot.clickOnCountry(toAtck);
-                if(toAtck.getOwner() == this) {
-                    attackOK = true;
+            boolean risk = false;
+            while (toAtck.getOwner() !=this) {
+                risk = attackIsToRisky(fromAtck,toAtck);
+                if(!risk) {
+                    clickRobot.clickOnCountry(toAtck);
+                } else {
                     break;
                 }
             }
-            if(!attackOK) {
-                while (!attackIsToRisky(fromAtck,toAtck)) {
-                    clickRobot.clickOnCountry(toAtck);
+            if(!risk) {
+                int troopToPlace = board.getTroopsToPlace();
+                for(int i =0;i< troopToPlace;i++) {
+                    clickRobot.clickOnCountry(toPlace);
                 }
+            } else {
+                break;
             }
         }
     }
