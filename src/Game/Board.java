@@ -53,14 +53,14 @@ public class Board extends JPanel{
     }
 
     public void setMode(Mode mode) {
-        System.out.println("changement de Mode");
-        System.out.println("ancien mode: " + this.mode);
+        //System.out.println("changement de Mode");
+        //System.out.println("ancien mode: " + this.mode);
         this.mode = mode;
-        System.out.println("nouveau mode: " + this.mode);
+        //System.out.println("nouveau mode: " + this.mode);
 
-        System.out.println("SelectedCountry: " + getSelectedCountry());
-        System.out.println("SelectedSecondCountry: " + getSelectedSecondCountry());
-        System.out.println("");
+        //System.out.println("SelectedCountry: " + getSelectedCountry());
+        //System.out.println("SelectedSecondCountry: " + getSelectedSecondCountry());
+        //System.out.println("");
     }
 
     public JLabel getTurnInfo() {

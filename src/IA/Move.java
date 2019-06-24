@@ -16,4 +16,8 @@ public class Move {
         reinforcementList = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return placementList.toString() + "\n" + attackList.toString() + "\n" + reinforcementList.toString();
+    }
 }

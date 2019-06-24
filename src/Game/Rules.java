@@ -203,6 +203,7 @@ public class Rules {
     /* checks the number of available soldiers to see if a battle is over
      */
     private void checkOutcome() {
+        System.out.println(board.getSelectedCountry() + " is attacking " + board.getSelectedSecondCountry());
         if (board.getSelectedCountry().numSoldiers == 1) {
             board.setSelectedCountry(null);
             board.setSelectedSecondCountry(null);
@@ -210,6 +211,7 @@ public class Rules {
             return;
         }
         if (board.getSelectedSecondCountry().numSoldiers < 1) {
+            System.out.println(board.getSelectedCountry() + " has taken the country!");
             board.setMode(new NewCountryMode(board));
             conquer();
         }

@@ -3,12 +3,13 @@ package Game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.HashSet;
 import java.util.Set;
 
 /* Game.Country object which represents the information pertaining
  * to a country in the game
  */
-public class Country implements Comparable<Country> {
+public class Country implements Comparable<Country>,Cloneable {
     public Set<Country> adjacentCountries;
     private String name;
 
@@ -111,7 +112,32 @@ public class Country implements Comparable<Country> {
     public int compareTo(Country c) {
         return name.compareTo(c.name);
     }
-    
 
 
+    public Object clone()throws CloneNotSupportedException{
+        return super.clone();
+    }
+
+    /*public Country clone() {
+        Country c = new Country(this.name,this.x,this.y,this.width,this.height);
+        c.adjacentCountries = new HashSet<>();
+        c.continent = new HashSet<>();
+        c.numSoldiers = this.numSoldiers;
+        c.selected = this.selected;
+        c.owner = this.owner;
+        for(Country adjacent : this.adjacentCountries) {
+            c.adjacentCountries.add(adjacent.clone());
+        }
+        for(Country country : continent) {
+            c.continent.add(country.clone());
+        }
+
+        return c;
+    }*/
+
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

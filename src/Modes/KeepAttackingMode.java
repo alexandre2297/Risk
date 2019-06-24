@@ -35,7 +35,7 @@ public class KeepAttackingMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.getRules().keepAttacking(mouse);
-        System.out.println("Keep Attacking Mode for player " + (board.getTurn() + 1));
+        //System.out.println("Keep Attacking Mode for player " + (board.getTurn() + 1));
 
     }
 }

@@ -35,7 +35,7 @@ public class AttackToMode implements Mode {
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
         board.getRules().selectEnemyCountry(mouse);
-        System.out.println("Attack To Mode for player " + (board.getTurn() + 1));
+        //System.out.println("Attack To Mode for player " + (board.getTurn() + 1));
 
     }
 }

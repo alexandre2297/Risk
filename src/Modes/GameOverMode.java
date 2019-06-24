@@ -31,6 +31,6 @@ public class GameOverMode implements Mode {
 
     @Override
     public void mouseClick(Point mouse, boolean isRightClick) {
-        System.out.println("mouse click in game over Mode for player " + (board.getTurn() + 1));
+        //System.out.println("mouse click in game over Mode for player " + (board.getTurn() + 1));
     }
 }

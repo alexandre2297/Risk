@@ -1,4 +1,4 @@
-package IA;
+    package IA;
 
 import Game.Board;
 import Game.Country;
@@ -30,6 +30,7 @@ public class IA extends Player {
     private Pair<GameState, Move> simPlayTurn(GameState state, Strategy strategy, Player player) {
         Behavior behavior;
         int randomizer = Misc.RandomInt(1, 4);
+            /*
         switch (strategy) {
             case DEFENSIVE:
                 behavior = new DefensiveBehavior(state , player);
@@ -42,23 +43,26 @@ public class IA extends Player {
                 behavior = new NeutralBehavior(state , player);
                 break;
         }
+                */
+        behavior = new AggressiveBehavior(state , player, randomizer);
 
         behavior.placement();
         behavior.attack();
         behavior.reinforcement();
+        //return replaceWithActualCountries(behavior.getActions());
         return behavior.getActions();
     }
 
     public void play() {
         Move moveToPlay = minimax(new GameState(board), 10);
-        //playMove(moveToPlay);
+        playMove(moveToPlay);
     }
 
     public void playInitialPlacement() {
         Move moveToPlayPlacements = new Move();
         moveToPlayPlacements.placementList.addAll(AnalysePlacementsForContinents());
         if(board.getTroopsToPlace() > 0) {
-            moveToPlayPlacements.placementList.add(new Pair<Integer, Country>(board.getTroopsToPlace()-1, searchCountryByMaxProximityEnemies(this)));
+            moveToPlayPlacements.placementList.add(new Pair<>(board.getTroopsToPlace()-1, searchCountryByMaxProximityEnemies(this)));
         }
         playMove(moveToPlayPlacements);
     }
@@ -181,7 +185,8 @@ public class IA extends Player {
             clickRobot.clickOnCountry(fromAtck);
             boolean risk = false;
             while (toAtck.getOwner() !=this) {
-                risk = attackIsToRisky(fromAtck,toAtck);
+                //risk = attackIsToRisky(fromAtck,toAtck);
+                risk = false;
                 if(!risk) {
                     clickRobot.clickOnCountry(toAtck);
                 } else {
@@ -200,7 +205,7 @@ public class IA extends Player {
     }
 
     private boolean attackIsToRisky(Country owner, Country enemy) {
-        return ! (owner.numSoldiers +5 > enemy.numSoldiers);
+        return ! (owner.numSoldiers  > enemy.numSoldiers);
     }
 
     private void playRenforcements(List<Triple<Integer, Country,Country>> reinforcements) {
@@ -292,7 +297,7 @@ public class IA extends Player {
     private int evaluateState(GameState state, Player player) {
         int myCountries = getNbCountries(state, player);
         double myCountryBonus = Math.max((double) myCountries / 3, 3.0);
-        double theirCountryBonus = Math.max((double) (state.getCountryOwnerList().size() - myCountries) / 3, 3.0);
+        double theirCountryBonus = Math.max((double) (board.getCountries().length - myCountries) / 3, 3.0);
 
         double myContinentBonus = (double) getContinentBonuses(state, this);
         double theirContinentBonus = 0;
@@ -311,9 +316,7 @@ public class IA extends Player {
     }
 
     private enum Strategy {
-        DEFENSIVE,
-        AGGRESSIVE,
-        NEUTRAL
+        AGGRESSIVE
     }
 
     private final Strategy[] strategies = Strategy.values();
@@ -353,14 +356,14 @@ public class IA extends Player {
         if (depth == maxDepth)
             return new Pair<Integer, Move>(evaluateState(state, player), null);
 
-        int nextPlayerIndex = playerIndex + 1 % board.getPlayers().length;
+        int nextPlayerIndex = (playerIndex + 1) % board.getPlayers().length;
         if (player == this) {
             int best = Integer.MIN_VALUE;
 
             Move bestMovePossible = null;
             // Recur for every strategy
             for (int i = 0; i < strategies.length; i++) {
-                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], this);
+                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], player);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1, nextPlayerIndex,
                                                               alpha, beta, maxDepth);
                 int val = result.first;
@@ -374,7 +377,7 @@ public class IA extends Player {
                     break;
             }
             if (depth != 0)
-                return new Pair<Integer, Move>(best, null);
+                return new Pair<>(best, new Move()); //@todo debug null
 
             return new Pair<>(best, bestMovePossible);
         }
@@ -383,7 +386,7 @@ public class IA extends Player {
 
             // Recur for every strategy
             for (int i = 0; i < strategies.length; i++) {
-                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], null);
+                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], player);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1,nextPlayerIndex,
                                                               alpha, beta, maxDepth);
                 int val = result.first;
@@ -393,7 +396,47 @@ public class IA extends Player {
                 if (beta <= alpha) // Alpha Beta Pruning
                     break;
             }
-            return new Pair<Integer, Move>(best, null);
+            return new Pair<>(best, new Move());
         }
+    }
+
+    private Pair<GameState, Move> replaceWithActualCountries(Pair<GameState, Move> pair) {
+        Move newMove = pair.second;
+
+        //placement
+        for(int i = 0; i < newMove.placementList.size(); i++) {
+            Pair<Integer, Country> oldPair = newMove.placementList.get(i);
+            newMove.placementList.set(i, new Pair<>(oldPair.first, replaceWithActualCountry(oldPair.second)));
+        }
+
+        //attack
+        for(int i = 0; i < newMove.attackList.size(); i++) {
+            Triple <Country, Country, Country> oldTriple = newMove.attackList.get(i);
+            newMove.attackList.set(i, new Triple<>(replaceWithActualCountry(oldTriple.first),
+                                                   replaceWithActualCountry(oldTriple.second),
+                                                   replaceWithActualCountry(oldTriple.third)));
+        }
+
+        //reinforcement
+        for(int i = 0; i < newMove.reinforcementList.size(); i++) {
+            Triple <Integer, Country, Country> oldTriple = newMove.reinforcementList.get(i);
+            newMove.reinforcementList.set(i, new Triple<>(oldTriple.first,
+                                                          replaceWithActualCountry(oldTriple.second),
+                                                          replaceWithActualCountry(oldTriple.third)));
+        }
+
+        return new Pair<>(pair.first, newMove);
+    }
+
+
+    /*
+     * replace the given theorized country instance by the board actual and real instance
+     */
+    private Country replaceWithActualCountry(Country c1) {
+        for (Country c2 : board.getCountries()) {
+            if (c1.getName().equals(c2.getName()))
+                return c2;
+        }
+        return c1;
     }
 }
