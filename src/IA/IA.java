@@ -5,6 +5,8 @@ import Game.Country;
 import Game.Misc;
 import Game.Player;
 import IA.Behavior.*;
+import Modes.AttackFromMode;
+import Modes.NewCountryMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,12 +161,16 @@ public class IA extends Player {
      * @param move move to play
      */
     private void playMove(Move move) {
+        System.out.println("playmove");
         ClickSimulator clickRobot = ClickSimulator.getInstance();
+        System.out.println("PLACEMENT");
         playPlacements(move.placementList);
+        System.out.println("ATCK");
         playAttacks(move.attackList);
         clickRobot.clickOnNext();
         playRenforcements(move.reinforcementList);
         clickRobot.clickOnNext();
+        System.out.println("endmove");
     }
 
     private void playPlacements(List<Pair<Integer,Country>> placements) {
@@ -172,6 +178,7 @@ public class IA extends Player {
         for (Pair<Integer,Country> placement : placements) {
             for(int i=0;i<placement.first;i++) {
                 clickRobot.clickOnCountry(placement.second);
+                System.out.println(placement.second);
             }
         }
     }
@@ -179,10 +186,17 @@ public class IA extends Player {
     private void playAttacks(List<Triple<Country,Country,Country>> attacks) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
         for (Triple<Country,Country,Country> attack : attacks) {
+            Country selected = board.getSelectedCountry();
+
             Country fromAtck = replaceWithActualCountry(attack.first);
             Country toAtck = replaceWithActualCountry(attack.second);
             Country toPlace = replaceWithActualCountry(attack.third);
-            clickRobot.clickOnCountry(fromAtck);
+            if(selected !=null && selected.getName() != fromAtck.getName()) {
+                clickRobot.clickOnCountry(selected);
+            }
+            while(board.getSelectedCountry() == null) {
+                clickRobot.clickOnCountry(fromAtck);
+            }
             boolean risk = false;
             while (toAtck.getOwner() != this) {
                 risk = isAttackTooRisky(fromAtck,toAtck);
@@ -193,8 +207,7 @@ public class IA extends Player {
                 }
             }
             if(!risk) {
-                int troopToPlace = board.getTroopsToPlace();
-                for(int i =0;i< troopToPlace;i++) {
+                while ((board.getMode() instanceof NewCountryMode)) {
                     clickRobot.clickOnCountry(toPlace);
                 }
             } else {
@@ -364,8 +377,8 @@ public class IA extends Player {
 
             Move bestMovePossible = null;
             // Recur for every strategy
-            for (int i = 0; i < strategies.length; i++) {
-                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[i], player);
+            for (int i = 0; i < 5; i++) {
+                Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[0], player);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1, nextPlayerIndex,
                                                               alpha, beta, maxDepth);
                 int val = result.first;
