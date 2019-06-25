@@ -100,7 +100,7 @@ public class NeutralBehavior implements Behavior {
                     if (getOwner(adjacent) != player) {
                         return adjacent;
                     } else {
-                        continue;
+                        break;
                     }
                 }
                 indexResearch++;
