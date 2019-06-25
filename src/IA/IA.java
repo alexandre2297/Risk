@@ -172,6 +172,7 @@ public class IA extends Player {
         System.out.println("ATCK");
         playAttacks(move.attackList);
         clickRobot.clickOnNext();
+        System.out.println("reinforcement");
         playRenforcements(move.reinforcementList);
         clickRobot.clickOnNext();
         System.out.println("endmove");

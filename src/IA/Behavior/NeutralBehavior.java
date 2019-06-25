@@ -88,17 +88,25 @@ public class NeutralBehavior implements Behavior {
         }
     }
 
-    private Country getRandomAdjacent(Country c) {
+    private Country getRandomAdjacent(Country c, boolean isPlayerOwnerOFCountry) {
         int nbTry = Misc.RandomInt(1,3);
         for(int i=0; i<nbTry; i++) {
             int indexAdjacent = Misc.RandomInt(0, c.getAdjacentCountries().size() - 1);
             int indexResearch = 0;
             for (Country adjacent : c.getAdjacentCountries()) {
                 if (indexResearch == indexAdjacent) {
-                    if (getOwner(adjacent) != player) {
-                        return adjacent;
+                    if (isPlayerOwnerOFCountry) {
+                        if (getOwner(adjacent) == player) {
+                            return adjacent;
+                        } else {
+                            break;
+                        }
                     } else {
-                        break;
+                        if (getOwner(adjacent) != player) {
+                            return adjacent;
+                        } else {
+                            break;
+                        }
                     }
                 }
                 indexResearch++;
@@ -116,7 +124,7 @@ public class NeutralBehavior implements Behavior {
         } while (countryFrom == null);
 
         //Select random adjacent CountryFrom
-        Country countryTo = getRandomAdjacent(countryFrom);
+        Country countryTo = getRandomAdjacent(countryFrom, false);
         if(countryTo!= null) {
             int approximateLoss = (int) Math.ceil(countryTo.numSoldiers / Misc.threeVTwo);
             if (approximateLoss < outputState.getCountryArmyList().get(getIndex(countryFrom))) {
@@ -136,7 +144,25 @@ public class NeutralBehavior implements Behavior {
         }
     }
 
-    public void reinforcement() {}
+    public void reinforcement() {
+        Country country1;
+        int armyCountry1;
+        Country country2;
+
+        do {
+            country1 = selectRandomCountry();
+            armyCountry1 = outputState.getCountryArmyList().get(getIndex(country1));
+        } while (armyCountry1 == 1);
+
+        do {
+            country2 = getRandomAdjacent(country1, true);
+        } while (country2 == null);
+
+        outputState.setCountryArmyVal(getIndex(country1), 1);
+        outputState.setCountryArmyVal(getIndex(country2), outputState.getCountryArmyList().get(getIndex(country2)) + armyCountry1 - 1);
+        move.reinforcementList.add(new Triple<>(armyCountry1 - 1, country1, country2));
+    }
+
     public Pair<GameState, Move> getActions() {return new Pair<>(outputState, move);}
 }
 
