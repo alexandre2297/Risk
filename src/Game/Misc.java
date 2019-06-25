@@ -46,23 +46,4 @@ public class Misc {
     public static int RandomInt(int min, int max) {
         return current().nextInt(min, max + 1);
     }
-
-    /**
-     * Student john = new Student("John", 13, "23, 23rd Street, Goa");
-     * Student abraham = (Student) deepCopy(john);
-     */
-    public static Object deepCopy(Object object) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ObjectOutputStream outputStrm = new ObjectOutputStream(outputStream);
-            outputStrm.writeObject(object);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-            ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
-            return objInputStream.readObject();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

@@ -44,27 +44,34 @@ public class AggressiveBehavior implements Behavior {
             int currentArmy = pair.second.numSoldiers;
             if (currentArmy < pair.first) {
                 if (troopsToPlace < pair.first) {
-                    //outputState.setCountryArmyVal(countryIndex, currentArmy + pair.first);
                     int armyToPlace = Math.min(pair.first, troopsToPlace);
-                    pair.second.numSoldiers = currentArmy + armyToPlace;
+                    outputState.setCountryArmyVal(getIndex(pair.second), currentArmy + armyToPlace);
                     troopsToPlace -= armyToPlace;
                     move.placementList.add(new Pair<>(armyToPlace, pair.second));
                 } else {
-                    pair.second.numSoldiers = currentArmy + troopsToPlace;
-                    //outputState.setCountryArmyVal(countryIndex, currentArmy + troopsToPlace);
+                    outputState.setCountryArmyVal(getIndex(pair.second), currentArmy + troopsToPlace);
                 }
             }
         }
 
         //put remaining troops to a pseudorandom country
         if (troopsToPlace > 0 && borderingArmies.size() > 0) {
-            //int countryIndex = inputState.getCountryList().indexOf(borderingArmies.get(0).second);
             int currentArmy = borderingArmies.get(0).second.numSoldiers;
-            //outputState.setCountryArmyVal(countryIndex, currentArmy + troopsToPlace);
-            borderingArmies.get(0).second.numSoldiers = currentArmy + troopsToPlace;
             move.placementList.add(new Pair<>(troopsToPlace, borderingArmies.get(0).second));
+            outputState.setCountryArmyVal(getIndex(borderingArmies.get(0).second), currentArmy + troopsToPlace);
             troopsToPlace = 0;
         }
+    }
+
+    /**
+     * get the real index of a country based on its name
+     */
+    private int getIndex(Country country1) {
+        for (int i = 0; i != outputState.getCountryList().size(); i++)
+            if (country1.getName().equals(outputState.getCountryList().get(i).getName())) {
+                return i;
+        }
+        return 9999; //the country is not found
     }
 
     /**
@@ -75,11 +82,11 @@ public class AggressiveBehavior implements Behavior {
         //get bordering countries and corresponding armies
         ArrayList<Pair<Integer, Country>> borderingArmies = new ArrayList<>();
         for (Country country1 : inputState.getCountryList()) {
-            if (country1.getOwner() == player) {
+            if (getOwner(country1) == player) {
                 int borderingArmy = 0;
-                for (Country country2 : country1.adjacentCountries) {
-                    if (country2.getOwner() != player) {
-                        borderingArmy += country2.numSoldiers;
+                for (Country country2 : country1.getAdjacentCountries()) {
+                    if (getOwner(country2) != player) {
+                        borderingArmy += outputState.getCountryArmyList().get(getIndex(country2));
                     }
                 }
                 borderingArmies.add(new Pair<>(borderingArmy, country1));
@@ -105,8 +112,6 @@ public class AggressiveBehavior implements Behavior {
             }
         }
         attackWeakCountries();
-
-
     }
 
     /**
@@ -124,20 +129,6 @@ public class AggressiveBehavior implements Behavior {
         }
     }
 
-    //si au moins un de nos pays a plus de 5 troupes
-    private boolean haveITheStrengthToAttack(int threshold) {
-        for (Country country1 : outputState.getCountryList()) {
-            if (country1.getOwner() == player && country1.numSoldiers > threshold) {
-                for (Country country2 : country1.adjacentCountries) {
-                    if (country2.getOwner() != player)
-                        return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
     /**
      * @todo everything
      */
@@ -145,7 +136,6 @@ public class AggressiveBehavior implements Behavior {
 
 
     public Pair<GameState, Move> getActions() {
-        System.out.println(move);
         return new Pair<>(outputState, move);}
 
     /**
@@ -156,9 +146,9 @@ public class AggressiveBehavior implements Behavior {
     private ArrayList<Triple<Country, Country, Integer>> getAdjacentEnemyCountries(int maxArmyPositioned) {
         ArrayList<Triple<Country, Country, Integer>> adjacentCountryList = new ArrayList<>();
         for (Country country1 : outputState.getCountryList()) {
-            if (country1.getOwner() == player) {
-                for (Country country2 : country1.adjacentCountries) {
-                    if (country2.getOwner() != player) {
+            if (getOwner(country1) == player) {
+                for (Country country2 : country1.getAdjacentCountries()) {
+                    if (getOwner(country2) != player) {
                         int countryArmy = country2.numSoldiers;
                         if (countryArmy <= maxArmyPositioned) {
                             adjacentCountryList.add(new Triple<>(country1, country2, countryArmy));
@@ -168,7 +158,6 @@ public class AggressiveBehavior implements Behavior {
             }
         }
         adjacentCountryList = Misc.removeDuplicates(adjacentCountryList);
-        //Collections.sort(adjacentCountryList, Collections.reverseOrder());
         QuickSortForTriple qs = new QuickSortForTriple(adjacentCountryList);
         adjacentCountryList = qs.getSortedArray();
 
@@ -182,7 +171,7 @@ public class AggressiveBehavior implements Behavior {
     private boolean isACompleteContinent(Country country) {
         Set<Country> continent = country.getContinent();
         for (Country country2 : continent) {
-            if (country2.getOwner() != country.getOwner())
+            if (getOwner(country2) != getOwner(country))
                 return false;
         }
         return true;
@@ -190,11 +179,15 @@ public class AggressiveBehavior implements Behavior {
 
     private int getTotalAdjacentEnnemyArmies(Country country) {
         int adjacentArmies = 0;
-        for (Country country2 : country.adjacentCountries) {
-            if (country2.getOwner() != player)
-                adjacentArmies += country2.numSoldiers;
+        for (Country country2 : country.getAdjacentCountries()) {
+            if (getOwner(country2) != player)
+                adjacentArmies += outputState.getCountryArmyList().get(getIndex(country2));
         }
         return adjacentArmies;
+    }
+
+    private Player getOwner(Country c) {
+        return outputState.getCountryOwnerList().get(getIndex(c));
     }
 
     private void takeCountry(Country countryFrom, Country countryTo) {
@@ -202,9 +195,9 @@ public class AggressiveBehavior implements Behavior {
             //estimates the average number of troops lost to take a country
             int approximateLoss = (int) Math.ceil(countryTo.numSoldiers / Misc.threeVTwo);
             if (approximateLoss < countryFrom.numSoldiers) {
-                countryFrom.numSoldiers -= approximateLoss;
-                countryTo.setOwner(player);
-                //outputState.setCountryOwnerVal(outputState.getCountryList().indexOf(countryTo), player);
+                outputState.setCountryArmyVal(getIndex(countryFrom), outputState.getCountryArmyList().get(getIndex(countryFrom)) - approximateLoss);
+                outputState.setCountryOwnerVal(getIndex(countryFrom), player);
+
                 replaceTroops(countryFrom, countryTo);
             }
         }
@@ -214,13 +207,13 @@ public class AggressiveBehavior implements Behavior {
         int troopsToPlace = countryFrom.numSoldiers - 1;
         if (countryFrom.numSoldiers - 1 > getTotalAdjacentEnnemyArmies(countryTo)) {
             move.attackList.add(new Triple<>(countryFrom, countryTo, countryTo));
-            countryFrom.numSoldiers = 1;
-            countryTo.numSoldiers = troopsToPlace;
+            outputState.setCountryArmyVal(getIndex(countryFrom), 1);
+            outputState.setCountryArmyVal(getIndex(countryTo), troopsToPlace);
         }
         else {
             move.attackList.add(new Triple<>(countryFrom, countryTo, countryFrom));
-            countryTo.numSoldiers = 1;
-            countryFrom.numSoldiers = troopsToPlace;
+            outputState.setCountryArmyVal(getIndex(countryTo), 1);
+            outputState.setCountryArmyVal(getIndex(countryFrom), troopsToPlace);
         }
     }
 }

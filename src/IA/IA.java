@@ -350,6 +350,7 @@ public class IA extends Player {
      */
     private Pair<Integer, Move> minimaxRecursive(GameState state, int depth, int playerIndex,
                                                  int alpha, int beta, int maxDepth) {
+        System.out.println("minimax called");
         Player player = board.getPlayers()[playerIndex];
 
         // Terminating condition (max depth is reached)
