@@ -33,7 +33,7 @@ public class NeutralBehavior implements Behavior {
             if (country1.getName().equals(outputState.getCountryList().get(i).getName())) {
                 return i;
             }
-        return 9999; //the country is not found
+        throw new IndexOutOfBoundsException(); //the country is not found
     }
 
     private int getPlacementTroops() {

@@ -15,6 +15,10 @@ public class IA extends Player {
 
     private Board board;
 
+    private enum Strategy {
+        NEUTRAL
+    }
+
     public IA(Board board) {
         this.board = board;
     }
@@ -184,13 +188,20 @@ public class IA extends Player {
             Country toPlace = replaceWithActualCountry(attack.third);
             clickRobot.clickOnCountry(fromAtck);
             boolean risk = false;
+            System.out.println(1);
             while (toAtck.getOwner() != this) {
+                System.out.println(2);
                 risk = isAttackTooRisky(fromAtck,toAtck);
+                System.out.println(3);
                 if(!risk) {
+                    System.out.println(4);
                     clickRobot.clickOnCountry(toAtck);
+                    System.out.println(5);
                 } else {
+                    System.out.println(6);
                     break;
                 }
+                System.out.println(7);
             }
             if(!risk) {
                 int troopToPlace = board.getTroopsToPlace();
@@ -314,10 +325,6 @@ public class IA extends Player {
         double heuristic = a * myCountryBonus + b * myContinentBonus - c * theirCountryBonus - d * theirContinentBonus;
         
         return (int) Math.round(heuristic * 10);
-    }
-
-    private enum Strategy {
-        NEUTRAL
     }
 
     private final Strategy[] strategies = Strategy.values();
