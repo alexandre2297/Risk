@@ -17,7 +17,7 @@ public class InitialPlacingMode implements Mode {
     @Override
     public String getStringForMode() {
         String init = "Game.Player " + (board.getTurn() + 1) + ": ";
-        return init + "Welcome to Risk! Place troops: " + board.getTroopsToPlace() + " remaining";
+        return init + "Welcome to Risk! Place troops: " + (board.getTroopsToPlace() - 1) + " remaining";
     }
 
     @Override

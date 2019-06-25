@@ -377,7 +377,7 @@ public class IA extends Player {
 
             Move bestMovePossible = null;
             // Recur for every strategy
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 1; i++) {
                 Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[0], player);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1, nextPlayerIndex,
                                                               alpha, beta, maxDepth);

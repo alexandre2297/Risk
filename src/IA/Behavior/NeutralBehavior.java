@@ -110,10 +110,10 @@ public class NeutralBehavior implements Behavior {
 
     public void simulateAttack() {
         //select random countryFrom IA
-        Country countryFrom = selectRandomCountryWhoCanAttack();
-        if (countryFrom == null) {
-            return ;
-        }
+        Country countryFrom;
+        do {
+            countryFrom = selectRandomCountryWhoCanAttack();
+        } while (countryFrom == null);
 
         //Select random adjacent CountryFrom
         Country countryTo = getRandomAdjacent(countryFrom);
@@ -128,12 +128,14 @@ public class NeutralBehavior implements Behavior {
             }
         }
     }
+
     public void attack() {
         int nbAttack = Misc.RandomInt(1,5);
         for(int i = 0; i < nbAttack; i++) {
             simulateAttack();
         }
     }
+
     public void reinforcement() {}
     public Pair<GameState, Move> getActions() {return new Pair<>(outputState, move);}
 }
