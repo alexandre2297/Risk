@@ -180,10 +180,17 @@ public class IA extends Player {
 
     private void playPlacements(List<Pair<Integer,Country>> placements) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
+        int troopsToPlace =  board.getTroopsToPlace() -1;
+        System.out.println("A placer :" +troopsToPlace);
+        int compteur = 0;
         for (Pair<Integer,Country> placement : placements) {
             for(int i=0;i<placement.first;i++) {
+                if(compteur == troopsToPlace) {
+                    break;
+                }
                 clickRobot.clickOnCountry(placement.second);
-                System.out.println(placement.second);
+                System.out.println("placement on" + placement.second);
+                compteur++;
             }
         }
     }
@@ -201,6 +208,7 @@ public class IA extends Player {
             }
             while(board.getSelectedCountry() == null) {
                 clickRobot.clickOnCountry(fromAtck);
+                board.setSelectedCountry(fromAtck);
             }
             boolean risk = false;
             while (toAtck.getOwner() != this) {
