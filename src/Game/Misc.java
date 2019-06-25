@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
@@ -45,5 +47,11 @@ public class Misc {
      */
     public static int RandomInt(int min, int max) {
         return current().nextInt(min, max + 1);
+    }
+
+    public static String getTimestamp () {
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        Date date = new Date(System.currentTimeMillis());
+        return formatter.format(date);
     }
 }

@@ -7,8 +7,6 @@ import IA.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.zip.CheckedOutputStream;
 
 public class NeutralBehavior implements Behavior {
 
