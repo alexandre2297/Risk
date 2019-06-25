@@ -179,13 +179,13 @@ public class IA extends Player {
     private void playAttacks(List<Triple<Country,Country,Country>> attacks) {
         ClickSimulator clickRobot = ClickSimulator.getInstance();
         for (Triple<Country,Country,Country> attack : attacks) {
-            Country fromAtck = attack.first;
-            Country toAtck = attack.second;
-            Country toPlace =attack.third;
+            Country fromAtck = replaceWithActualCountry(attack.first);
+            Country toAtck = replaceWithActualCountry(attack.second);
+            Country toPlace = replaceWithActualCountry(attack.third);
             clickRobot.clickOnCountry(fromAtck);
             boolean risk = false;
-            while (toAtck.getOwner() !=this) {
-                risk = attackIsToRisky(fromAtck,toAtck);
+            while (toAtck.getOwner() != this) {
+                risk = isAttackTooRisky(fromAtck,toAtck);
                 if(!risk) {
                     clickRobot.clickOnCountry(toAtck);
                 } else {
@@ -203,7 +203,7 @@ public class IA extends Player {
         }
     }
 
-    private boolean attackIsToRisky(Country owner, Country enemy) {
+    private boolean isAttackTooRisky(Country owner, Country enemy) {
         return ! (owner.numSoldiers  > enemy.numSoldiers);
     }
 
