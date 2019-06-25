@@ -185,8 +185,7 @@ public class IA extends Player {
             clickRobot.clickOnCountry(fromAtck);
             boolean risk = false;
             while (toAtck.getOwner() !=this) {
-                //risk = attackIsToRisky(fromAtck,toAtck);
-                risk = false;
+                risk = attackIsToRisky(fromAtck,toAtck);
                 if(!risk) {
                     clickRobot.clickOnCountry(toAtck);
                 } else {
@@ -295,6 +294,7 @@ public class IA extends Player {
      * @return heuristic calculated
      */
     private int evaluateState(GameState state, Player player) {
+
         int myCountries = getNbCountries(state, player);
         double myCountryBonus = Math.max((double) myCountries / 3, 3.0);
         double theirCountryBonus = Math.max((double) (board.getCountries().length - myCountries) / 3, 3.0);
@@ -312,6 +312,7 @@ public class IA extends Player {
         double d = 1.0;
 
         double heuristic = a * myCountryBonus + b * myContinentBonus - c * theirCountryBonus - d * theirContinentBonus;
+        
         return (int) Math.round(heuristic * 10);
     }
 
