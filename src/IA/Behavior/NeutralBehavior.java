@@ -149,14 +149,14 @@ public class NeutralBehavior implements Behavior {
         int armyCountry1;
         Country country2;
 
-        do {
-            country1 = selectRandomCountry();
-            armyCountry1 = outputState.getCountryArmyList().get(getIndex(country1));
-        } while (armyCountry1 == 1);
+        country1 = selectRandomCountry();
+        if (country1 == null)
+            return;
+        armyCountry1 = outputState.getCountryArmyList().get(getIndex(country1));
 
-        do {
-            country2 = getRandomAdjacent(country1, true);
-        } while (country2 == null);
+        country2 = getRandomAdjacent(country1, true);
+        if (country2 == null)
+            return;
 
         outputState.setCountryArmyVal(getIndex(country1), 1);
         outputState.setCountryArmyVal(getIndex(country2), outputState.getCountryArmyList().get(getIndex(country2)) + armyCountry1 - 1);
