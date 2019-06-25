@@ -188,20 +188,13 @@ public class IA extends Player {
             Country toPlace = replaceWithActualCountry(attack.third);
             clickRobot.clickOnCountry(fromAtck);
             boolean risk = false;
-            System.out.println(1);
             while (toAtck.getOwner() != this) {
-                System.out.println(2);
                 risk = isAttackTooRisky(fromAtck,toAtck);
-                System.out.println(3);
                 if(!risk) {
-                    System.out.println(4);
                     clickRobot.clickOnCountry(toAtck);
-                    System.out.println(5);
                 } else {
-                    System.out.println(6);
                     break;
                 }
-                System.out.println(7);
             }
             if(!risk) {
                 int troopToPlace = board.getTroopsToPlace();
