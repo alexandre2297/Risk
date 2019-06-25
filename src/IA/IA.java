@@ -44,7 +44,7 @@ public class IA extends Player {
                 break;
         }
                 */
-        behavior = new AggressiveBehavior(state , player, randomizer);
+        behavior = new NeutralBehavior(state , player);
 
         behavior.placement();
         behavior.attack();
@@ -316,7 +316,7 @@ public class IA extends Player {
     }
 
     private enum Strategy {
-        AGGRESSIVE
+        NEUTRAL
     }
 
     private final Strategy[] strategies = Strategy.values();

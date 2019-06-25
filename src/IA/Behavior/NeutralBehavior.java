@@ -23,8 +23,23 @@ public class NeutralBehavior implements Behavior {
         this.player = player;
     }
 
+    private Player getOwner(Country c) {
+        return outputState.getCountryOwnerList().get(getIndex(c));
+    }
+
+    /**
+     * get the real index of a country based on its name
+     */
+    private int getIndex(Country country1) {
+        for (int i = 0; i != outputState.getCountryList().size(); i++)
+            if (country1.getName().equals(outputState.getCountryList().get(i).getName())) {
+                return i;
+            }
+        return 9999; //the country is not found
+    }
+
     private int getPlacementTroops() {
-        return IA.getContinentBonuses(inputState, player) + Math.max(IA.getNbCountries(inputState, player) / 3, 3);
+        return IA.getContinentBonuses(outputState, player) + Math.max(IA.getNbCountries(outputState, player) / 3, 3);
     }
 
     private Country selectRandomCountry() {
@@ -36,7 +51,7 @@ public class NeutralBehavior implements Behavior {
     private List<Country> countriesPlayer() {
         List<Country> countries = new ArrayList<>();
         for(Country c : outputState.getCountryList()) {
-            if(c.getOwner()==player) {
+            if(getOwner(c) == player) {
                 countries.add(c);
             }
         }
@@ -55,7 +70,7 @@ public class NeutralBehavior implements Behavior {
     private List<Country> countriesWhoCanAttack() {
         List<Country> countries = new ArrayList<>();
         for(Country c : countriesPlayer()) {
-            if(c.numSoldiers >1) {
+            if(outputState.getCountryArmyList().get(getIndex(c)) > 1) {
                 countries.add(c);
             }
         }
@@ -66,10 +81,10 @@ public class NeutralBehavior implements Behavior {
         int troopsToPlace = getPlacementTroops();
         while(troopsToPlace > 0) {
             Country selectedCountry = selectRandomCountry();
-            if(selectedCountry.getOwner() == player) {
-                int nbSoldier = Misc.RandomInt(1,troopsToPlace);
-                selectedCountry.numSoldiers += nbSoldier;
-                move.placementList.add(new Pair<>(nbSoldier,selectedCountry));
+            if(getOwner(selectedCountry) == player) {
+                int nbSoldier = Misc.RandomInt(1 ,troopsToPlace);
+                outputState.setCountryArmyVal(getIndex(selectedCountry), outputState.getCountryArmyList().get(getIndex(selectedCountry)) + nbSoldier);
+                move.placementList.add(new Pair<>(nbSoldier, selectedCountry));
                 troopsToPlace -= nbSoldier;
             }
         }
@@ -77,12 +92,12 @@ public class NeutralBehavior implements Behavior {
 
     private Country getRandomAdjacent(Country c) {
         int nbTry = Misc.RandomInt(1,3);
-        for(int i=0;i<nbTry;i++) {
+        for(int i=0; i<nbTry; i++) {
             int indexAdjacent = Misc.RandomInt(0, c.getAdjacentCountries().size() - 1);
             int indexResearch = 0;
             for (Country adjacent : c.getAdjacentCountries()) {
                 if (indexResearch == indexAdjacent) {
-                    if (adjacent.getOwner() != player) {
+                    if (getOwner(adjacent) != player) {
                         return adjacent;
                     } else {
                         continue;
@@ -98,7 +113,7 @@ public class NeutralBehavior implements Behavior {
     public void simulateAttack() {
         //select random countryFrom IA
         Country countryFrom = selectRandomCountryWhoCanAttack();
-        if(countryFrom == null) {
+        if (countryFrom == null) {
             return ;
         }
 
@@ -106,18 +121,18 @@ public class NeutralBehavior implements Behavior {
         Country countryTo = getRandomAdjacent(countryFrom);
         if(countryTo!= null) {
             int approximateLoss = (int) Math.ceil(countryTo.numSoldiers / Misc.threeVTwo);
-            if (approximateLoss < countryFrom.numSoldiers) {
-                countryTo.numSoldiers -= approximateLoss -1;
-                countryFrom.numSoldiers = 1;
-                countryTo.setOwner(player);
+            if (approximateLoss < outputState.getCountryArmyList().get(getIndex(countryFrom))) {
+                outputState.setCountryArmyVal(getIndex(countryFrom), outputState.getCountryArmyList().get(getIndex(countryFrom)) - approximateLoss + 1);
+                outputState.setCountryArmyVal(getIndex(countryTo), 1);
+                outputState.setCountryOwnerVal(getIndex(countryTo), player);
 
                 move.attackList.add(new Triple<>(countryFrom,countryTo,countryTo));
             }
         }
     }
     public void attack() {
-        int nbAttack = Misc.RandomInt(1,50);
-        for(int i=0;i<nbAttack;i++) {
+        int nbAttack = Misc.RandomInt(1,5);
+        for(int i = 0; i < nbAttack; i++) {
             simulateAttack();
         }
     }
