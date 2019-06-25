@@ -7,6 +7,7 @@ import Game.Player;
 import IA.Behavior.*;
 import Modes.AttackFromMode;
 import Modes.NewCountryMode;
+import Modes.PlacingMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,9 +194,15 @@ public class IA extends Player {
                 compteur++;
             }
         }
+        for(int i=compteur;i<troopsToPlace;i++) {
+            clickRobot.clickOnCountry(placements.get(0).second);
+        }
     }
 
     private void playAttacks(List<Triple<Country,Country,Country>> attacks) {
+        if(board.getMode() instanceof PlacingMode) {
+            board.setMode(board.getMode().nextMode());
+        }
         ClickSimulator clickRobot = ClickSimulator.getInstance();
         for (Triple<Country,Country,Country> attack : attacks) {
             Country selected = board.getSelectedCountry();
@@ -214,6 +221,7 @@ public class IA extends Player {
             while (toAtck.getOwner() != this) {
                 risk = isAttackTooRisky(fromAtck,toAtck);
                 if(!risk) {
+                    board.setSelectedSecondCountry(toAtck);
                     clickRobot.clickOnCountry(toAtck);
                 } else {
                     break;
@@ -386,7 +394,7 @@ public class IA extends Player {
 
             Move bestMovePossible = null;
             // Recur for every strategy
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 5; i++) {
                 Pair<GameState, Move> turnPlayed = simPlayTurn(state, strategies[0], player);
                 Pair<Integer, Move> result = minimaxRecursive(turnPlayed.first, depth + 1, nextPlayerIndex,
                                                               alpha, beta, maxDepth);
