@@ -42,6 +42,9 @@ public class NeutralBehavior implements Behavior {
 
     private Country selectRandomCountry() {
         List<Country> countries = countriesPlayer();
+        if(countries.size()==0) {
+            return null;
+        }
         int countryIndex = Misc.RandomInt(0,countries.size()-1);
         return countries.get(countryIndex);
     }
@@ -69,7 +72,13 @@ public class NeutralBehavior implements Behavior {
         List<Country> countries = new ArrayList<>();
         for(Country c : countriesPlayer()) {
             if(outputState.getCountryArmyList().get(getIndex(c)) > 1) {
-                countries.add(c);
+                for (Country adjacent : c.getAdjacentCountries()) {
+                    if(getOwner(adjacent) != player) {
+                        countries.add(c);
+                        break;
+                    }
+                }
+
             }
         }
         return countries;
@@ -79,6 +88,8 @@ public class NeutralBehavior implements Behavior {
         int troopsToPlace = getPlacementTroops();
         while(troopsToPlace > 0) {
             Country selectedCountry = selectRandomCountry();
+            if(selectedCountry==null)
+                break;
             if(getOwner(selectedCountry) == player) {
                 int nbSoldier = Misc.RandomInt(1 ,troopsToPlace);
                 outputState.setCountryArmyVal(getIndex(selectedCountry), outputState.getCountryArmyList().get(getIndex(selectedCountry)) + nbSoldier);
@@ -129,7 +140,7 @@ public class NeutralBehavior implements Behavior {
         }
     }
     public void attack() {
-        int nbAttack = Misc.RandomInt(1,5);
+        int nbAttack = Misc.RandomInt(1,15);
         for(int i = 0; i < nbAttack; i++) {
             simulateAttack();
         }
