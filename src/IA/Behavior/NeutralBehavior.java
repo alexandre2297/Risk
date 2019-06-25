@@ -7,8 +7,6 @@ import IA.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.zip.CheckedOutputStream;
 
 public class NeutralBehavior implements Behavior {
 
@@ -35,7 +33,7 @@ public class NeutralBehavior implements Behavior {
             if (country1.getName().equals(outputState.getCountryList().get(i).getName())) {
                 return i;
             }
-        return 9999; //the country is not found
+        throw new IndexOutOfBoundsException(); //the country is not found
     }
 
     private int getPlacementTroops() {

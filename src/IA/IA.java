@@ -17,6 +17,10 @@ public class IA extends Player {
 
     private Board board;
 
+    private enum Strategy {
+        NEUTRAL
+    }
+
     public IA(Board board) {
         this.board = board;
     }
@@ -335,10 +339,6 @@ public class IA extends Player {
         double heuristic = a * myCountryBonus + b * myContinentBonus - c * theirCountryBonus - d * theirContinentBonus;
         
         return (int) Math.round(heuristic * 10);
-    }
-
-    private enum Strategy {
-        NEUTRAL
     }
 
     private final Strategy[] strategies = Strategy.values();
